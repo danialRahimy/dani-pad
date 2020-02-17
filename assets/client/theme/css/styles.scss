@@ -5,3 +5,24 @@ p{
   text-align: right;
   direction: rtl;
 }
+
+.parent-row {
+  min-height: 64px;
+  line-height: 34px;
+}
+
+.parent-row a{
+  float: left;
+}
+
+.remove-row{
+  position: absolute;
+  top: 0px;
+  left: 4px;
+  background-color: #dc3545;
+  height: 38px;
+  width: 38px;
+  text-align: center;
+  padding-top: 5px;
+  cursor: pointer;
+}

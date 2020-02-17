@@ -3,7 +3,8 @@ var dataFromCache = {
 };
 
 function getDataFromCache() {
-    $.get("/assets/data/mainCat.json", function (data) {
+    let random = Math.random();
+    $.get("/assets/data/mainCat.json?" + random + "=" + random , function (data) {
         if (data.hasOwnProperty(undefined)){
             setTimeout( getDataFromCache,50)
         }else {
@@ -47,7 +48,7 @@ function run(){
         <slot></slot>
     </div>
     </div>
-    <div style="position: absolute;top:0; left: 0;background: orangered" @click="removeCollapseElm($event)">X</div>
+    <div v-if="mainCatId >= 0" class="remove-row" @click="removeCollapseElm($event)">X</div>
 </section>
 
         `,
@@ -92,7 +93,8 @@ function run(){
                         msg = JSON.parse(msg);
                         console.log(msg.status);
                         if (msg.status === "success"){
-                            dataFromCache.mainCat.push(data);
+                            dataFromCache.mainCat.splice(id, 1);
+                            event.target.parentNode.parentNode.removeChild(event.target.parentNode);
                             Swal.fire({
                                 icon: 'success',
                                 // title: 'Oops...',

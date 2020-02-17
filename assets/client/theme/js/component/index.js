@@ -67,19 +67,19 @@ function indexComponent (){
         template :
             `
             <div>
-                <collapse v-for="(data,index) in dataFromCache.mainCat" :mainCatId="data.id" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="'secondary'">
-                    <div class="mb-2">
+                <collapse v-for="(data,index) in dataFromCache.mainCat" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="'secondary'">
+                    <div class="mb-2 text-right">
                         <a class="btn btn-outline-primary col-lg-2" :data-related-description="index" @click="addParts($event,'description')">افزودن توضیح</a>
                         <a class="btn btn-outline-success col-lg-2" :data-related-tips="index" @click="addParts($event,'tips')">افزودن نکته</a>
                     </div>
                     <div v-for="(data2,index2) in data.description">
-                        <p class="alert alert-secondary pl-5" :data-related-description="index+'-'+index2">
+                        <p class="alert alert-secondary parent-row" :data-related-description="index+'-'+index2">
                             {{data2}}
                             <a class="btn btn-danger" @click="removeParts($event,'description')">X</a>
                         </p>
                     </div>
                     <div v-for="(data2,index2) in data.tips">
-                        <p class="alert alert-success" :data-related-tips="index+'-'+index2">
+                        <p class="alert alert-success parent-row" :data-related-tips="index+'-'+index2">
                         {{data2}}
                         <a class="btn btn-danger" @click="removeParts($event,'tips')">X</a>
                         </p>
@@ -156,6 +156,7 @@ function indexComponent (){
                     "subId": id.split("-")[1],
                     "value": value
                 };
+                console.log(data);
                 Swal.fire({
                     title: 'آیا از حذف این عبارت مطمئن هستید؟',
                     text: "غیر قابل بازگشت خواهد بود",
