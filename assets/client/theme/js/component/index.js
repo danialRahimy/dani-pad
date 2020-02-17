@@ -23,8 +23,18 @@ function indexComponent (){
             addNewMainCategory: function (event) {
                 let inputValue = document.querySelector("#add-main-category-parent input").value;
                 let textareaValue = document.querySelector("#add-main-category-parent textarea").innerText;
+                function getID (){
+                    let length = dataFromCache.mainCat.length;
+                    let length2 = length;
+                    length2 -= 1;
+                    if (length > 0){
+                        return ++dataFromCache.mainCat[length2].id;
+                    }else {
+                        return 1;
+                    }
+                }
                 let data = {
-                    "id":  dataFromCache.mainCat.length + 1,
+                    "id":  getID (),
                     "title": inputValue,
                     "tips": [],
                     "description": []

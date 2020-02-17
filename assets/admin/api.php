@@ -5,7 +5,12 @@ if ($_POST["type"] === "mainCategory"){
     if ($_POST["subType"] === "add"){
 
         $oldContent = json_decode(file_get_contents("../data/mainCat.json"),JSON_UNESCAPED_UNICODE);
-        $oldContent[] = array("id"=>intval($_POST["data"]["id"]),"title"=>$_POST["data"]["title"]);
+        $oldContent[] = array(
+            "id"=>intval($_POST["data"]["id"]),
+            "title"=>$_POST["data"]["title"],
+            "tips"=>array(),
+            "description"=>array(),
+        );
 
         file_put_contents("../data/mainCat.json",json_encode($oldContent,JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT));
 
