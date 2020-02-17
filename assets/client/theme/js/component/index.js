@@ -25,7 +25,9 @@ function indexComponent (){
                 let textareaValue = document.querySelector("#add-main-category-parent textarea").innerText;
                 let data = {
                     "id":  dataFromCache.mainCat.length + 1,
-                    "title": inputValue
+                    "title": inputValue,
+                    "tips": [],
+                    "description": []
                 };
 
                 $.ajax({

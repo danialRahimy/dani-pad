@@ -86,7 +86,9 @@ function run(){
                     data: {
                         type: "mainCategory",
                         subType: "remove",
-                        data: id
+                        data: {
+                            id: id
+                        }
                     }
                 })
                     .done(function( msg ) {
