@@ -22,6 +22,12 @@ p{
   direction: rtl;
 }
 
+.imgs img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .parent-row {
   position: relative;
   padding-left: 84px;
@@ -49,9 +55,8 @@ p{
 
 .remove-row{
   position: absolute;
-  top: 0px;
+  top: 0;
   left: 4px;
-  background-color: #dc3545;
   height: 38px;
   width: 38px;
   text-align: center;
@@ -72,4 +77,17 @@ p{
 
 .add-main-category-parent-color-container span.active{
   border: 3px solid #f00 !important;
+}
+
+.icons{
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.icons img{
+  width: 100%;
+  height: 100%;
+  display: block;
 }

@@ -48,7 +48,7 @@ function run(){
         <slot></slot>
     </div>
     </div>
-    <div v-if="mainCatId >= 0" class="remove-row" @click="removeCollapseElm($event)">D</div>
+    <div v-if="mainCatId >= 0" class="remove-row icons" @click="removeCollapseElm($event)" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></div>
 </section>
 
         `,

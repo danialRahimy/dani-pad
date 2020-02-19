@@ -88,14 +88,14 @@ function indexComponent (){
                 <collapse v-for="(data,index) in dataFromCache.mainCat" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="data.color">
                     <color-box :clickOn="activeColorClicked"></color-box>
                     <div class="mb-2 text-right">
-                        <a class="btn btn-outline-primary" :data-related-values="index" @click="addParts($event,'values')">+</a>
+                        <a class="icons" :data-related-values="index" @click="addParts($event,'values')" title="افزودن"><img src="/assets/client/theme/img/icon/pencil.png" alt="افزودن"></a>
                     </div>
                     <p class="alert alert-info" :data-related-description="index">{{data.description}}</p>
                     <div v-for="(data2,index2) in data.values">
                         <div :class="'alert btn-' + data2.color + ' parent-row'" :data-related-values="index+'-'+index2">
                             <p>{{data2.value}}</p>
-                            <a class="btn btn-danger" @click="editParts($event,'values')">E</a>
-                            <a class="btn btn-danger" @click="removeParts($event,'values')">D</a>
+                            <a class="icons" @click="editParts($event,'values')" title="ویرایش"><img src="/assets/client/theme/img/icon/eraser.png" alt="ویرایش"></a>
+                            <a class="icons" @click="removeParts($event,'values')" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></a>
                         </div>
                     </div>
                 </collapse>
@@ -118,7 +118,7 @@ function indexComponent (){
                 let text = "متن" ;
                 Swal.fire({
                     title: text + ' خود را درج کنید',
-                    input: 'text',
+                    input: 'textarea',
                     inputAttributes: {
                         autocapitalize: 'off'
                     },
@@ -174,9 +174,13 @@ function indexComponent (){
 
             },
             editParts : function (event,value) {
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+                event.preventDefault();
                 let thisV = this;
-                let idArray = event.target.parentNode.getAttribute("data-related-" + value).split("-");
-                let message = event.target.parentNode.querySelector("p").innerText;
+                let idArray = event.target.parentNode.parentNode.getAttribute("data-related-" + value).split("-");
+
+                let message = event.target.parentNode.parentNode.querySelector("p").innerText;
                 let text = "متن" ;
                 Swal.fire({
                     title: text + ' خود را درج کنید',
@@ -236,7 +240,7 @@ function indexComponent (){
 
             },
             removeParts : function (event,value) {
-                let id = event.target.parentNode.getAttribute("data-related-" + value);
+                let id = event.target.parentNode.parentNode.getAttribute("data-related-" + value);
                 let data = {
                     "id": id.split("-")[0],
                     "subId": id.split("-")[1],
