@@ -1,6 +1,7 @@
-# git-guide
+# dani-pad
 
-this is a simple project with VUE-JS and PHP that show you how to store some data in json file and remove them
-you learn VUE-JS, JS, PHP, JSON structure
+it's a different note pad, I call it dani-pad;
 
-maybe later, not a simple!! who knows?!
+it's made with vuejs, php and json for storing data;
+
+it's just a baby, she needs your help :D;
