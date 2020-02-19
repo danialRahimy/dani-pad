@@ -8,8 +8,9 @@ if ($_POST["type"] === "mainCategory"){
         $oldContent[] = array(
             "id"=>intval($_POST["data"]["id"]),
             "title"=>$_POST["data"]["title"],
-            "tips"=>array(),
-            "description"=>array(),
+            "color"=>$_POST["data"]["color"],
+            "description"=>$_POST["data"]["description"],
+            "values"=>array(),
         );
 
         file_put_contents("../data/mainCat.json",json_encode($oldContent,JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT));
@@ -37,7 +38,7 @@ if ($_POST["type"] === "mainCategory"){
     if ($_POST["subType"] === "addParts"){
 
         $oldContent = json_decode(file_get_contents("../data/mainCat.json"),JSON_UNESCAPED_UNICODE);
-        $oldContent[intval($_POST["data"]["id"])][$_POST["data"]["value"]][] = $_POST["data"]["description"];
+        $oldContent[intval($_POST["data"]["id"])][$_POST["data"]["value"]][] = $_POST["data"]["values"];
 
         file_put_contents("../data/mainCat.json",json_encode($oldContent,JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT));
 
@@ -58,6 +59,20 @@ if ($_POST["type"] === "mainCategory"){
         file_put_contents("../data/mainCat.json",json_encode($oldContent,JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT | true));
 
         echo json_encode(array("status"=>"success","message"=>"با موفقیت حذف شد"),JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT);
+
+    }
+
+    if ($_POST["subType"] === "editParts"){
+
+        $oldContent = json_decode(file_get_contents("../data/mainCat.json"),JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT | true);
+        $oldContent = json_decode(json_encode($oldContent), true);
+
+        $oldContent[intval($_POST["data"]["id"]["parent"])][$_POST["data"]["value"]][intval($_POST["data"]["id"]["child"])]["color"] = $_POST["data"]["values"]["color"];
+        $oldContent[intval($_POST["data"]["id"]["parent"])][$_POST["data"]["value"]][intval($_POST["data"]["id"]["child"])]["value"] = $_POST["data"]["values"]["value"];
+
+        file_put_contents("../data/mainCat.json",json_encode($oldContent,JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT | true));
+
+        echo json_encode(array("status"=>"success","message"=>"با موفقیت ویرایش شد"),JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT);
 
     }
 

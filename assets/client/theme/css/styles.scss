@@ -1,18 +1,50 @@
+@import "../font/Vazir/font.css";
+:root {
+  --font-family-main: VazirFR;
+}
+
+body,a,p,h1,h2,h3,h4,h5,h6,div{
+  font-family: var(--font-family-main);
+  margin: 0;
+}
+
+p{
+  white-space: pre-line;
+}
+
 input,textarea{
+  @include important-text;
   direction: rtl;
 }
+
 p{
   text-align: right;
   direction: rtl;
 }
 
 .parent-row {
-  min-height: 64px;
-  line-height: 34px;
+  position: relative;
+  padding-left: 84px;
+}
+
+.parent-row:first-line{
+  padding-left: 84px;
 }
 
 .parent-row a{
   float: left;
+  position: absolute;
+  left: 0;
+  top: 6px;
+  color: #fff;
+}
+
+.parent-row a:nth-child(2){
+  float: left;
+  position: absolute;
+  left: 40px;
+  top: 6px;
+  color: #fff;
 }
 
 .remove-row{
@@ -26,4 +58,18 @@ p{
   padding-top: 5px;
   cursor: pointer;
   border-radius: 3px 0 0 3px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-main-category-parent-color-container span{
+  float: right;
+  margin-left: 10px;
+  border: 3px solid transparent;
+}
+
+.add-main-category-parent-color-container span.active{
+  border: 3px solid #f00 !important;
 }

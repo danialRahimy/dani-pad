@@ -48,7 +48,7 @@ function run(){
         <slot></slot>
     </div>
     </div>
-    <div v-if="mainCatId >= 0" class="remove-row" @click="removeCollapseElm($event)">X</div>
+    <div v-if="mainCatId >= 0" class="remove-row" @click="removeCollapseElm($event)">D</div>
 </section>
 
         `,
@@ -77,42 +77,51 @@ function run(){
 
             },
             removeCollapseElm : function (event) {
-                console.log(event.target.parentNode);
                 let id = event.target.parentNode.getAttribute("data-main-cat-id");
-
-                $.ajax({
-                    method: "POST",
-                    url: "/assets/admin/api.php",
-                    data: {
-                        type: "mainCategory",
-                        subType: "remove",
-                        data: {
-                            id: id
-                        }
+                Swal.fire({
+                    title: 'آیا از حذف این عبارت مطمئن هستید؟',
+                    text: "غیر قابل بازگشت خواهد بود",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'بله مطمئنم',
+                    cancelButtonText: 'خیر شک دارم'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            method: "POST",
+                            url: "/assets/admin/api.php",
+                            data: {
+                                type: "mainCategory",
+                                subType: "remove",
+                                data: {
+                                    id: id
+                                }
+                            }
+                        })
+                            .done(function( msg ) {
+                                msg = JSON.parse(msg);
+                                if (msg.status === "success"){
+                                    dataFromCache.mainCat.splice(id, 1);
+                                    event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        // title: 'Oops...',
+                                        text: msg.message,
+                                        // footer: '<a href>Why do I have this issue?</a>'
+                                    })
+                                }else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: "مشکلی پیش آمده است",
+                                        // footer: '<a href>Why do I have this issue?</a>'
+                                    })
+                                }
+                            });
                     }
-                })
-                    .done(function( msg ) {
-                        msg = JSON.parse(msg);
-                        console.log(msg.status);
-                        if (msg.status === "success"){
-                            dataFromCache.mainCat.splice(id, 1);
-                            event.target.parentNode.parentNode.removeChild(event.target.parentNode);
-                            Swal.fire({
-                                icon: 'success',
-                                // title: 'Oops...',
-                                text: msg.message,
-                                // footer: '<a href>Why do I have this issue?</a>'
-                            })
-                        }else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: "مشکلی پیش آمده است",
-                                // footer: '<a href>Why do I have this issue?</a>'
-                            })
-                        }
-                    });
-
+                });
             }
         }
     });
@@ -136,7 +145,25 @@ function run(){
         </nav>
         `
     });
-
+    Vue.component("color-box",{
+        props: {
+          clickOn :{
+              required : true
+          }
+        },
+        template:`
+        <div class="add-main-category-parent-color-container">
+            <span @click="clickOn($event)" class="alert btn-secondary active" data-color="secondary"></span>
+            <span @click="clickOn($event)" class="alert btn-danger" data-color="danger"></span>
+            <span @click="clickOn($event)" class="alert btn-success" data-color="success"></span>
+            <span @click="clickOn($event)" class="alert btn-primary" data-color="primary"></span>
+            <span @click="clickOn($event)" class="alert btn-warning" data-color="warning"></span>
+            <span @click="clickOn($event)" class="alert btn-info" data-color="info"></span>
+            <span @click="clickOn($event)" class="alert btn-light" data-color="light"></span>
+            <span @click="clickOn($event)" class="alert btn-dark" data-color="dark"></span>
+        </div>
+        `
+    });
     if (typeof indexComponent === "function"){
         indexComponent();
     }

@@ -20,6 +20,7 @@ class required
     protected $js_lib_sweetalert2 = "sweetalert2@9.js";
 
     protected $js_functions = "functions.js";
+    protected $js_VueHelpers = "VueHelpers.js";
 
     protected $js_vueUInstant = "vueInstant.js";
     protected $js_component_index = "component/index.js";
@@ -52,6 +53,7 @@ class required
         $jsFileList = [
             $this->js_functions,
             $this->js_component_general,
+            $this->js_VueHelpers,
         ];
         $cssLibFileList = [
             $this->css_lib_bootstrap,

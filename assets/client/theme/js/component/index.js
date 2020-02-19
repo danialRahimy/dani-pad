@@ -5,6 +5,7 @@ function indexComponent (){
             <div>
                 <collapse :id="'add-main-category-parent'" :titleBtn="'افزودن موضوع اصلی'" :color="'primary'" :onClick="addNewMainCategory">
                     <div>
+                        <color-box :clickOn="activeColorClicked"></color-box>
                         <input type="text" placeholder="عنوان" class="form-control mb-2">
                         <textarea placeholder="توضیحات" class="form-control"></textarea>
                         <a class="btn btn-block btn-success mt-2" @click="addNewMainCategory($event)">افزودن</a>
@@ -16,13 +17,17 @@ function indexComponent (){
         data: function (){
             return {
                 dani: window.dani,
+                VueHelpers : VueHelpers,
+                dataNeedToSend: {
+                    "color" : "secondary"
+                }
             }
         },
 
         methods: {
             addNewMainCategory: function (event) {
                 let inputValue = document.querySelector("#add-main-category-parent input").value;
-                let textareaValue = document.querySelector("#add-main-category-parent textarea").innerText;
+                let textareaValue = document.querySelector("#add-main-category-parent textarea").value;
                 function getID (){
                     let length = dataFromCache.mainCat.length;
                     let length2 = length;
@@ -36,8 +41,9 @@ function indexComponent (){
                 let data = {
                     "id":  getID (),
                     "title": inputValue,
-                    "tips": [],
-                    "description": []
+                    "color": this.dataNeedToSend.color,
+                    "description": textareaValue,
+                    "values": [],
                 };
 
                 $.ajax({
@@ -51,7 +57,6 @@ function indexComponent (){
                 })
                     .done(function( msg ) {
                         msg = JSON.parse(msg);
-                        console.log(msg.status);
                         if (msg.status === "success"){
                             dataFromCache.mainCat.push(data);
                             Swal.fire({
@@ -70,31 +75,28 @@ function indexComponent (){
                         }
                     });
             },
-
+            activeColorClicked: function (event) {
+                this.VueHelpers.activeColorClicked(event,this);
+            }
         }
 
     });
-
     Vue.component("main-category",{
         template :
             `
             <div>
-                <collapse v-for="(data,index) in dataFromCache.mainCat" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="'secondary'">
+                <collapse v-for="(data,index) in dataFromCache.mainCat" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="data.color">
+                    <color-box :clickOn="activeColorClicked"></color-box>
                     <div class="mb-2 text-right">
-                        <a class="btn btn-outline-primary col-lg-2" :data-related-description="index" @click="addParts($event,'description')">افزودن توضیح</a>
-                        <a class="btn btn-outline-success col-lg-2" :data-related-tips="index" @click="addParts($event,'tips')">افزودن نکته</a>
+                        <a class="btn btn-outline-primary" :data-related-values="index" @click="addParts($event,'values')">+</a>
                     </div>
-                    <div v-for="(data2,index2) in data.description">
-                        <p class="alert alert-secondary parent-row" :data-related-description="index+'-'+index2">
-                            {{data2}}
-                            <a class="btn btn-danger" @click="removeParts($event,'description')">X</a>
-                        </p>
-                    </div>
-                    <div v-for="(data2,index2) in data.tips">
-                        <p class="alert alert-success parent-row" :data-related-tips="index+'-'+index2">
-                        {{data2}}
-                        <a class="btn btn-danger" @click="removeParts($event,'tips')">X</a>
-                        </p>
+                    <p class="alert alert-info" :data-related-description="index">{{data.description}}</p>
+                    <div v-for="(data2,index2) in data.values">
+                        <div :class="'alert btn-' + data2.color + ' parent-row'" :data-related-values="index+'-'+index2">
+                            <p>{{data2.value}}</p>
+                            <a class="btn btn-danger" @click="editParts($event,'values')">E</a>
+                            <a class="btn btn-danger" @click="removeParts($event,'values')">D</a>
+                        </div>
                     </div>
                 </collapse>
             </div>
@@ -103,12 +105,17 @@ function indexComponent (){
             return {
                 dataFromCache : dataFromCache,
                 dani: window.dani,
+                VueHelpers: VueHelpers,
+                dataNeedToSend: {
+                    "color" : "secondary"
+                }
             }
         },
         methods: {
             addParts : function (event,value) {
+                let thisV = this;
                 let id = parseInt(event.target.getAttribute("data-related-" + value));
-                let text = value === "tips" ? "نکته" : "توضیح";
+                let text = "متن" ;
                 Swal.fire({
                     title: text + ' خود را درج کنید',
                     input: 'text',
@@ -120,11 +127,13 @@ function indexComponent (){
                     cancelButtonText: 'لغو',
                     showLoaderOnConfirm: true,
                 }).then((result) => {
-                    console.log(result);
                     if (result.value) {
                         let data = {
                             "id": id,
-                            "description": result.value,
+                            "values": {
+                                "color": this.dataNeedToSend.color,
+                                "value": result.value,
+                            },
                             "value": value,
                         };
                         $.ajax({
@@ -138,9 +147,75 @@ function indexComponent (){
                         })
                             .done(function( msg ) {
                                 msg = JSON.parse(msg);
-                                console.log(msg.status);
                                 if (msg.status === "success"){
-                                    dataFromCache.mainCat[id][value].push(result.value);
+                                    dataFromCache.mainCat[id][value].push(
+                                        {
+                                            "color": thisV.dataNeedToSend.color,
+                                            "value": result.value,
+                                        }
+                                    );
+                                    Swal.fire({
+                                        icon: 'success',
+                                        // title: 'Oops...',
+                                        text: msg.message,
+                                        // footer: '<a href>Why do I have this issue?</a>'
+                                    })
+                                }else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: "مشکلی پیش آمده است",
+                                        // footer: '<a href>Why do I have this issue?</a>'
+                                    })
+                                }
+                            });
+                    }
+                });
+
+            },
+            editParts : function (event,value) {
+                let thisV = this;
+                let idArray = event.target.parentNode.getAttribute("data-related-" + value).split("-");
+                let message = event.target.parentNode.querySelector("p").innerText;
+                let text = "متن" ;
+                Swal.fire({
+                    title: text + ' خود را درج کنید',
+                    inputValue: message,
+                    input: 'textarea',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'ثبت',
+                    cancelButtonText: 'لغو',
+                    showLoaderOnConfirm: true,
+                }).then((result) => {
+                    if (result.value) {
+                        let data = {
+                            "id": {
+                                "parent": idArray[0],
+                                "child": idArray[1]
+                            },
+                            "values": {
+                                "color": this.dataNeedToSend.color,
+                                "value": result.value,
+                            },
+                            "value": value,
+                        };
+                        $.ajax({
+                            method: "POST",
+                            url: "/assets/admin/api.php",
+                            data: {
+                                type: "mainCategory",
+                                subType: "editParts",
+                                data: data
+                            }
+                        })
+                            .done(function( msg ) {
+                                msg = JSON.parse(msg);
+                                if (msg.status === "success"){
+                                    dataFromCache.mainCat[idArray[0]][value][idArray[1]].color = thisV.dataNeedToSend.color;
+                                    dataFromCache.mainCat[idArray[0]][value][idArray[1]].value = result.value;
                                     Swal.fire({
                                         icon: 'success',
                                         // title: 'Oops...',
@@ -162,13 +237,11 @@ function indexComponent (){
             },
             removeParts : function (event,value) {
                 let id = event.target.parentNode.getAttribute("data-related-" + value);
-                console.log(id);
                 let data = {
                     "id": id.split("-")[0],
                     "subId": id.split("-")[1],
                     "value": value
                 };
-                console.log(data);
                 Swal.fire({
                     title: 'آیا از حذف این عبارت مطمئن هستید؟',
                     text: "غیر قابل بازگشت خواهد بود",
@@ -191,7 +264,6 @@ function indexComponent (){
                         })
                             .done(function( msg ) {
                                 msg = JSON.parse(msg);
-                                console.log(msg.status);
                                 if (msg.status === "success"){
                                     dataFromCache.mainCat[data.id][value].splice(data.subId, 1);
                                     Swal.fire({
@@ -212,6 +284,9 @@ function indexComponent (){
                     }
                 });
             },
+            activeColorClicked: function (event) {
+                this.VueHelpers.activeColorClicked(event,this);
+            }
         }
     });
 
