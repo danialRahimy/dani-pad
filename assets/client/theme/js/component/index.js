@@ -94,8 +94,8 @@ function indexComponent (){
                     <div v-for="(data2,index2) in data.values">
                         <div :class="'alert btn-' + data2.color + ' parent-row'" :data-related-values="index+'-'+index2">
                             <p>{{data2.value}}</p>
-                            <a class="icons" @click="editParts($event,'values')" title="ویرایش"><img src="/assets/client/theme/img/icon/eraser.png" alt="ویرایش"></a>
-                            <a class="icons" @click="removeParts($event,'values')" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></a>
+                            <a class="icons" :data-color="data2.color" @click="editParts($event,'values')" title="ویرایش"><img src="/assets/client/theme/img/icon/eraser.png" alt="ویرایش"></a>
+                            <a class="icons" :data-color="data2.color" @click="removeParts($event,'values')" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></a>
                         </div>
                     </div>
                 </collapse>
@@ -114,10 +114,13 @@ function indexComponent (){
         methods: {
             addParts : function (event,value) {
                 let thisV = this;
-                let id = parseInt(event.target.getAttribute("data-related-" + value));
-                let text = "متن" ;
+                /*** get index of category in mainCat ***/
+                let id = parseInt(event.target.parentNode.getAttribute("data-related-" + value));
+
+                /*** get data and send to server ***/
+                // get text of value of user
                 Swal.fire({
-                    title: text + ' خود را درج کنید',
+                    title: 'متن خود را درج کنید',
                     input: 'textarea',
                     inputAttributes: {
                         autocapitalize: 'off'
@@ -126,16 +129,19 @@ function indexComponent (){
                     confirmButtonText: 'ثبت',
                     cancelButtonText: 'لغو',
                     showLoaderOnConfirm: true,
-                }).then((result) => {
+                })
+                    // pack data to send server
+                    .then((result) => {
                     if (result.value) {
                         let data = {
-                            "id": id,
+                            "id": id, // index of category on mainCat
                             "values": {
-                                "color": this.dataNeedToSend.color,
-                                "value": result.value,
+                                "color": this.dataNeedToSend.color, // get color
+                                "value": result.value, // get text of value
                             },
-                            "value": value,
+                            "value": value, // it's show in which property on the category store
                         };
+                        // send data to server
                         $.ajax({
                             method: "POST",
                             url: "/assets/admin/api.php",
@@ -174,16 +180,36 @@ function indexComponent (){
 
             },
             editParts : function (event,value) {
-                event.stopPropagation();
-                event.stopImmediatePropagation();
-                event.preventDefault();
+
                 let thisV = this;
+                /*** get index of category on main json file and index of value in the category ***/
                 let idArray = event.target.parentNode.parentNode.getAttribute("data-related-" + value).split("-");
 
+                /*** get color choosen finaly ***/
+                // get color choosen
+                let colorsElm = document.querySelectorAll(".add-main-category-parent-color-container [data-color]");
+
+                //set color on data need to send
+                this.dataNeedToSend.color = event.target.parentNode.parentNode.getAttribute("data-color");
+
+                // if color-box components child has add class so user click on the color this logic has for it
+                let hasAddClass = false;
+
+                // check user click on a color in color-box components
+                for (let i = 0 ; i < colorsElm.length ; i++){
+                    if (colorsElm[i].classList.contains("add")){
+                        hasAddClass = true;
+                        this.dataNeedToSend.color = colorsElm[i].getAttribute("data-color");
+                    }
+                }
+
+                /*** get value text before edit user wrote ***/
                 let message = event.target.parentNode.parentNode.querySelector("p").innerText;
-                let text = "متن" ;
+
+                /*** ask text value and save them  ***/
+                // get text of value
                 Swal.fire({
-                    title: text + ' خود را درج کنید',
+                    title: 'متن خود را درج کنید',
                     inputValue: message,
                     input: 'textarea',
                     inputAttributes: {
@@ -195,17 +221,21 @@ function indexComponent (){
                     showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.value) {
+
+                        // create data need to send
                         let data = {
                             "id": {
-                                "parent": idArray[0],
-                                "child": idArray[1]
+                                "parent": idArray[0], // index of category on
+                                "child": idArray[1] // index of value text on category
                             },
                             "values": {
-                                "color": this.dataNeedToSend.color,
-                                "value": result.value,
+                                "color": this.dataNeedToSend.color, // color choosen
+                                "value": result.value, // text of value wrote
                             },
-                            "value": value,
+                            "value": value, // it's show in which property on the category need to save
                         };
+
+                        // send data to server
                         $.ajax({
                             method: "POST",
                             url: "/assets/admin/api.php",
@@ -215,23 +245,23 @@ function indexComponent (){
                                 data: data
                             }
                         })
+                            // after receive respond of server
                             .done(function( msg ) {
                                 msg = JSON.parse(msg);
                                 if (msg.status === "success"){
+                                    // if success push data that save to the mainCat JUST FOR SHOW AND RENDER IN PAGE
                                     dataFromCache.mainCat[idArray[0]][value][idArray[1]].color = thisV.dataNeedToSend.color;
                                     dataFromCache.mainCat[idArray[0]][value][idArray[1]].value = result.value;
                                     Swal.fire({
                                         icon: 'success',
-                                        // title: 'Oops...',
                                         text: msg.message,
-                                        // footer: '<a href>Why do I have this issue?</a>'
                                     })
                                 }else {
+                                    // if got some eror from server
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
                                         text: "مشکلی پیش آمده است",
-                                        // footer: '<a href>Why do I have this issue?</a>'
                                     })
                                 }
                             });

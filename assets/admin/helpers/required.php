@@ -28,7 +28,7 @@ class required
     protected $js_component_general = "component/general.js";
 
     // css files
-    protected $css_styles = "styles.scss";
+    protected $css_styles = "styles.css";
     protected $css_lib_bootstrap = "bootstrap.css";
 
     private function cssAdder($fileName,$lib = false){

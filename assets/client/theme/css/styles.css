@@ -1,4 +1,4 @@
-@import "../font/Vazir/font.css";
+@import "/assets/client/theme/font/Vazir/font.css";
 :root {
   --font-family-main: VazirFR;
 }
@@ -13,7 +13,6 @@ p{
 }
 
 input,textarea{
-  @include important-text;
   direction: rtl;
 }
 

@@ -2,9 +2,10 @@
 
 use helpers\required;
 
-spl_autoload_register(function ($class_name) {
-    include 'assets/admin/' . $class_name . '.php';
-});
+require_once "assets/admin/helpers/required.php";
+//spl_autoload_register(function ($class_name) {
+//    include 'assets/admin/' . $class_name . '.php';
+//});
 
 $require = new required();
 
