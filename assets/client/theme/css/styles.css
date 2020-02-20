@@ -110,7 +110,7 @@ p{
     background-size: cover;
 }
 
-[data-main-cat-id][data-status=inprogress]::before{
+[data-main-cat-id][data-status=inProgress]::before{
     background-image: url("/assets/client/theme/img/icon/promotion.png");
 }
 
