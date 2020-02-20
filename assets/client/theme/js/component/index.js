@@ -3,7 +3,7 @@ function indexComponent (){
     Vue.component("add-main-category",{
         template: `
             <div>
-                <collapse :id="'add-main-category-parent'" :titleBtn="'افزودن موضوع اصلی'" :color="'primary'" :onClick="addNewMainCategory">
+                <collapse :id="'add-main-category-parent'" :status="'s'" :titleBtn="'افزودن موضوع اصلی'" :color="'primary'" :onClick="addNewMainCategory">
                     <div>
                         <color-box :clickOn="activeColorClicked"></color-box>
                         <input type="text" placeholder="عنوان" class="form-control mb-2">
