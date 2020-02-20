@@ -37,6 +37,7 @@ class mainCat{
         $oldContent = $this->getDataMainCat ();
         $oldContent[] = array(
             "id"=>intval($data["id"]),
+            "title"=>$data["title"],
             "status"=>$data["status"],
             "color"=>$data["color"],
             "description"=>$data["description"],
