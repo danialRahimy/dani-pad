@@ -191,9 +191,6 @@ function run(){
                     <li class="nav-item">
                         <a class="nav-link" href="/">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/addCommand.php">add command</a>
-                    </li>
                 </ul>
                 <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="live search" aria-label="Search" disabled>
