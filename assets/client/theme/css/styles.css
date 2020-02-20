@@ -1,92 +1,119 @@
 @import "/assets/client/theme/font/Vazir/font.css";
 :root {
-  --font-family-main: VazirFR;
+    --font-family-main: VazirFR;
 }
 
 body,a,p,h1,h2,h3,h4,h5,h6,div{
-  font-family: var(--font-family-main);
-  margin: 0;
+    font-family: var(--font-family-main);
+    margin: 0;
 }
 
 p{
-  white-space: pre-line;
+    white-space: pre-line;
 }
 
 input,textarea{
-  direction: rtl;
+    direction: rtl;
 }
 
 p{
-  text-align: right;
-  direction: rtl;
+    text-align: right;
+    direction: rtl;
 }
 
 .imgs img{
-  width: 100%;
-  height: 100%;
-  display: block;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .parent-row {
-  position: relative;
-  padding-left: 84px;
+    position: relative;
+    padding-left: 84px;
 }
 
 .parent-row:first-line{
-  padding-left: 84px;
+    padding-left: 84px;
 }
 
 .parent-row a{
-  float: left;
-  position: absolute;
-  left: 0;
-  top: 6px;
-  color: #fff;
+    float: left;
+    position: absolute;
+    left: 0;
+    top: 6px;
+    color: #fff;
 }
 
 .parent-row a:nth-child(2){
-  float: left;
-  position: absolute;
-  left: 40px;
-  top: 6px;
-  color: #fff;
+    float: left;
+    position: absolute;
+    left: 40px;
+    top: 6px;
+    color: #fff;
 }
 
 .remove-row{
-  position: absolute;
-  top: 0;
-  left: 4px;
-  height: 38px;
-  width: 38px;
-  text-align: center;
-  padding-top: 5px;
-  cursor: pointer;
-  border-radius: 3px 0 0 3px;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: absolute;
+    top: 0;
+    left: 4px;
+    height: 38px;
+    width: 90px !important;
+    text-align: center;
+    padding-top: 3px;
+    cursor: pointer;
+    border-radius: 3px 0 0 3px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.remove-row a{
+    float: left;
+    height: 33px;
+    width: 33px;
 }
 
 .add-main-category-parent-color-container span{
-  float: right;
-  margin-left: 10px;
-  border: 3px solid transparent;
+    float: right;
+    margin-left: 10px;
+    border: 3px solid transparent;
 }
 
 .add-main-category-parent-color-container span.active{
-  border: 3px solid #f00 !important;
+    border: 3px solid #f00 !important;
 }
 
 .icons{
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-  display: inline-block;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    display: inline-block;
 }
 
 .icons img{
-  width: 100%;
-  height: 100%;
-  display: block;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+[data-main-cat-id][data-status=inprogress]{
+    position: relative;
+}
+[data-main-cat-id][data-status]::before{
+    position: absolute;
+    top: 3px;
+    right: 9px;
+    padding: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    content: "";
+    background-size: cover;
+}
+
+[data-main-cat-id][data-status=inprogress]::before{
+    background-image: url("/assets/client/theme/img/icon/promotion.png");
+}
+
+[data-main-cat-id][data-status=done]::before{
+    background-image: url("/assets/client/theme/img/icon/goal.png");
 }

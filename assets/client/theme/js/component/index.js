@@ -41,6 +41,7 @@ function indexComponent (){
                 let data = {
                     "id":  getID (),
                     "title": inputValue,
+                    "status": "inProgress",
                     "color": this.dataNeedToSend.color,
                     "description": textareaValue,
                     "values": [],
@@ -85,7 +86,7 @@ function indexComponent (){
         template :
             `
             <div>
-                <collapse v-for="(data,index) in dataFromCache.mainCat" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="data.color">
+                <collapse v-for="(data,index) in dataFromCache.mainCat" :status="data.status" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="data.color">
                     <color-box :clickOn="activeColorClicked"></color-box>
                     <div class="mb-2 text-right">
                         <a class="icons" :data-related-values="index" @click="addParts($event,'values')" title="افزودن"><img src="/assets/client/theme/img/icon/pencil.png" alt="افزودن"></a>
@@ -103,12 +104,12 @@ function indexComponent (){
             `,
         data: function () {
             return {
-                dataFromCache : dataFromCache,
-                dani: window.dani,
-                VueHelpers: VueHelpers,
+                dataFromCache : dataFromCache, // all data got from jsons
+                dani: window.dani, // it's a library form myself
+                VueHelpers: VueHelpers, // vue heplers
                 dataNeedToSend: {
                     "color" : "secondary"
-                }
+                } // data need to send to the server
             }
         },
         methods: {
@@ -153,6 +154,7 @@ function indexComponent (){
                         })
                             .done(function( msg ) {
                                 msg = JSON.parse(msg);
+                                // if success data push to the array in mainCat JUST FOR SHOW ON THE PAGE
                                 if (msg.status === "success"){
                                     dataFromCache.mainCat[id][value].push(
                                         {
@@ -162,16 +164,15 @@ function indexComponent (){
                                     );
                                     Swal.fire({
                                         icon: 'success',
-                                        // title: 'Oops...',
                                         text: msg.message,
-                                        // footer: '<a href>Why do I have this issue?</a>'
                                     })
-                                }else {
+                                }
+                                // if get some error of server
+                                else {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
                                         text: "مشکلی پیش آمده است",
-                                        // footer: '<a href>Why do I have this issue?</a>'
                                     })
                                 }
                             });
@@ -186,19 +187,15 @@ function indexComponent (){
                 let idArray = event.target.parentNode.parentNode.getAttribute("data-related-" + value).split("-");
 
                 /*** get color choosen finaly ***/
-                // get color choosen
+                // get list of colors
                 let colorsElm = document.querySelectorAll(".add-main-category-parent-color-container [data-color]");
 
-                //set color on data need to send
-                this.dataNeedToSend.color = event.target.parentNode.parentNode.getAttribute("data-color");
-
-                // if color-box components child has add class so user click on the color this logic has for it
-                let hasAddClass = false;
+                //get color was set on this comes from server
+                this.dataNeedToSend.color = event.target.parentNode.getAttribute("data-color");
 
                 // check user click on a color in color-box components
                 for (let i = 0 ; i < colorsElm.length ; i++){
                     if (colorsElm[i].classList.contains("add")){
-                        hasAddClass = true;
                         this.dataNeedToSend.color = colorsElm[i].getAttribute("data-color");
                     }
                 }
@@ -270,12 +267,17 @@ function indexComponent (){
 
             },
             removeParts : function (event,value) {
-                let id = event.target.parentNode.parentNode.getAttribute("data-related-" + value);
+
+                /*** get index of category an value in the category ***/
+                let idArray = event.target.parentNode.parentNode.getAttribute("data-related-" + value);
+
+                // data
                 let data = {
-                    "id": id.split("-")[0],
-                    "subId": id.split("-")[1],
+                    "id": idArray.split("-")[0],
+                    "subId": idArray.split("-")[1],
                     "value": value
                 };
+                /*** get data from user to send ***/
                 Swal.fire({
                     title: 'آیا از حذف این عبارت مطمئن هستید؟',
                     text: "غیر قابل بازگشت خواهد بود",

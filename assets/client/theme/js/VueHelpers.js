@@ -16,5 +16,15 @@ let VueHelpers = {
     event.target.classList.add("add");
     thisV.dataNeedToSend.color = event.target.getAttribute("data-color");
     },
+    markAsDone: function (event,thisV) {
+        return {
+            category: function (event,thisV) {
+
+            },
+            note : function (event,thisV) {
+
+            }
+        }
+    }
 
 };

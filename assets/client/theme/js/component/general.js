@@ -34,10 +34,14 @@ function run(){
             mainCatId: {
                 type: Number,
                 required: false
+            },
+            status:{
+                type: String,
+                required: true
             }
         },
         template: `
-<section class="px-1" style="position: relative" :data-main-cat-id="mainCatId">
+<section class="px-1" style="position: relative" :data-main-cat-id="mainCatId" :data-status="status">
     <div>
         <a class="btn btn-block my-3" :class="'btn-outline-'+color" :data-color="color" data-toggle="collapse" :href="'#'+id" role="button" aria-expanded="false" :aria-controls="id" @click="changeBtn()">
             {{titleBtn}}
@@ -48,13 +52,17 @@ function run(){
         <slot></slot>
     </div>
     </div>
-    <div v-if="mainCatId >= 0" class="remove-row icons" @click="removeCollapseElm($event)" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></div>
+    <div v-if="mainCatId >= 0" class="remove-row icons">
+        <a  @click="removeCollapseElm($event)" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></a>
+        <a  @click="editCollapseElm($event)" title="ویرایش"><img src="/assets/client/theme/img/icon/eraser.png" alt="ویرایش"></a>
+    </div>
 </section>
 
         `,
         data: function () {
             return {
-                dani : window.dani
+                dani : window.dani,
+                dataFromCache: dataFromCache,
             }
         },
         methods: {
@@ -122,13 +130,62 @@ function run(){
                             });
                     }
                 });
-            }
+            },
+            editCollapseElm : function (event) {
+                let thisV = this;
+                let parentElm = event.target.parentNode.parentNode.parentNode;
+                let id = parentElm.getAttribute("data-main-cat-id");
+                let message = parentElm.querySelector("div:first-child a").innerText;
+                Swal.fire({
+                    title: 'متن خود را درج کنید',
+                    inputValue: message,
+                    input: 'text',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'ثبت',
+                    cancelButtonText: 'لغو',
+                    showLoaderOnConfirm: true,
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            method: "POST",
+                            url: "/assets/admin/api.php",
+                            data: {
+                                type: "mainCategory",
+                                subType: "edit",
+                                data: {
+                                    id: id,
+                                    values: result.value
+                                }
+                            }
+                        })
+                            .done(function( msg ) {
+                                msg = JSON.parse(msg);
+                                if (msg.status === "success"){
+                                    dataFromCache.mainCat[id].title = result.value;
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: msg.message,
+                                    })
+                                }else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: "مشکلی پیش آمده است",
+                                    })
+                                }
+                            });
+                    }
+                });
+            },
         }
     });
     Vue.component("top-header",{
         template: `
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">git guide</a>
+            <a class="navbar-brand" href="#">Dani pad :D</a>
             <div class=" navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
