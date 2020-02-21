@@ -5,7 +5,7 @@ namespace models;
 class mainCat{
 
     private $catFileAddress = "../data/mainCat.json";
-    private $successMessage = "با موفقیت انجام شد";
+    private $successMessage = "Done";
 
     /**
      * @return mixed

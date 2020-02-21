@@ -3,12 +3,12 @@ function indexComponent (){
     Vue.component("add-main-category",{
         template: `
             <div>
-                <collapse :id="'add-main-category-parent'" :status="'s'" :titleBtn="'افزودن موضوع اصلی'" :color="'primary'" :onClick="addNewMainCategory">
+                <collapse :id="'add-main-category-parent'" :status="'s'" :titleBtn="'Add New Category'" :color="'primary'" :onClick="addNewMainCategory">
                     <div>
                         <color-box :clickOn="activeColorClicked"></color-box>
-                        <input type="text" placeholder="عنوان" class="form-control mb-2">
-                        <textarea placeholder="توضیحات" class="form-control"></textarea>
-                        <a class="btn btn-block btn-success mt-2" @click="addNewMainCategory($event)">افزودن</a>
+                        <input type="text" placeholder="Title" class="form-control mb-2">
+                        <textarea placeholder="Description" class="form-control"></textarea>
+                        <a class="btn btn-block btn-success mt-2" @click="addNewMainCategory($event)">Submit</a>
                     </div>
                 </collapse>
             </div>
@@ -62,16 +62,13 @@ function indexComponent (){
                             dataFromCache.mainCat.push(data);
                             Swal.fire({
                                 icon: 'success',
-                                // title: 'Oops...',
                                 text: msg.message,
-                                // footer: '<a href>Why do I have this issue?</a>'
                             })
                         }else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: "مشکلی پیش آمده است",
-                                // footer: '<a href>Why do I have this issue?</a>'
+                                text: "Oops...",
                             })
                         }
                     });
@@ -89,14 +86,14 @@ function indexComponent (){
                 <collapse v-for="(data,index) in dataFromCache.mainCat" :status="data.status" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20)" :titleBtn="data.title" :color="data.color">
                     <color-box :clickOn="activeColorClicked"></color-box>
                     <div class="mb-2 text-right">
-                        <a class="icons" :data-related-values="index" @click="addParts($event,'values')" title="افزودن"><img src="/assets/client/theme/img/icon/pencil.png" alt="افزودن"></a>
+                        <a class="icons" :data-related-values="index" @click="addParts($event,'values')" title="Add"><img src="/assets/client/theme/img/icon/pencil.png" alt="Add"></a>
                     </div>
                     <p class="alert alert-info" :data-related-description="index">{{data.description}}</p>
                     <div v-for="(data2,index2) in data.values">
                         <div :class="'alert btn-' + data2.color + ' parent-row'" :data-related-values="index+'-'+index2">
                             <p>{{data2.value}}</p>
-                            <a class="icons" :data-color="data2.color" @click="editParts($event,'values')" title="ویرایش"><img src="/assets/client/theme/img/icon/eraser.png" alt="ویرایش"></a>
-                            <a class="icons" :data-color="data2.color" @click="removeParts($event,'values')" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></a>
+                            <a class="icons" :data-color="data2.color" @click="editParts($event,'values')" title="Edit"><img src="/assets/client/theme/img/icon/eraser.png" alt="Edit"></a>
+                            <a class="icons" :data-color="data2.color" @click="removeParts($event,'values')" title="Remove"><img src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
                         </div>
                     </div>
                 </collapse>
@@ -121,14 +118,14 @@ function indexComponent (){
                 /*** get data and send to server ***/
                 // get text of value of user
                 Swal.fire({
-                    title: 'متن خود را درج کنید',
+                    title: 'Type Your Text',
                     input: 'textarea',
                     inputAttributes: {
                         autocapitalize: 'off'
                     },
                     showCancelButton: true,
-                    confirmButtonText: 'ثبت',
-                    cancelButtonText: 'لغو',
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel',
                     showLoaderOnConfirm: true,
                 })
                     // pack data to send server
@@ -172,7 +169,7 @@ function indexComponent (){
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: "مشکلی پیش آمده است",
+                                        text: "Oops...",
                                     })
                                 }
                             });
@@ -206,15 +203,15 @@ function indexComponent (){
                 /*** ask text value and save them  ***/
                 // get text of value
                 Swal.fire({
-                    title: 'متن خود را درج کنید',
+                    title: 'Type Your Text',
                     inputValue: message,
                     input: 'textarea',
                     inputAttributes: {
                         autocapitalize: 'off'
                     },
                     showCancelButton: true,
-                    confirmButtonText: 'ثبت',
-                    cancelButtonText: 'لغو',
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel',
                     showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.value) {
@@ -258,7 +255,7 @@ function indexComponent (){
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: "مشکلی پیش آمده است",
+                                        text: "Oops...",
                                     })
                                 }
                             });
@@ -279,14 +276,14 @@ function indexComponent (){
                 };
                 /*** get data from user to send ***/
                 Swal.fire({
-                    title: 'آیا از حذف این عبارت مطمئن هستید؟',
-                    text: "غیر قابل بازگشت خواهد بود",
+                    title: 'Are You Sure?',
+                    text: "It's Can't Be Reverse",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'بله مطمئنم',
-                    cancelButtonText: 'خیر شک دارم'
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.value) {
                         $.ajax({
@@ -304,16 +301,13 @@ function indexComponent (){
                                     dataFromCache.mainCat[data.id][value].splice(data.subId, 1);
                                     Swal.fire({
                                         icon: 'success',
-                                        // title: 'Oops...',
                                         text: msg.message,
-                                        // footer: '<a href>Why do I have this issue?</a>'
                                     })
                                 }else {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: "مشکلی پیش آمده است",
-                                        // footer: '<a href>Why do I have this issue?</a>'
+                                        text: "Oops...",
                                     })
                                 }
                             });

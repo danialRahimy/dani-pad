@@ -53,8 +53,8 @@ function run(){
     </div>
     </div>
     <div v-if="mainCatId >= 0" class="remove-row icons">
-        <a  @click="removeCollapseElm($event)" title="حذف"><img src="/assets/client/theme/img/icon/scissors.png" alt="حذف"></a>
-        <a  @click="editCollapseElm($event)" title="ویرایش"><img src="/assets/client/theme/img/icon/eraser.png" alt="ویرایش"></a>
+        <a  @click="removeCollapseElm($event)" title="Remove"><img src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
+        <a  @click="editCollapseElm($event)" title="Edit"><img src="/assets/client/theme/img/icon/eraser.png" alt="Edit"></a>
     </div>
 </section>
 
@@ -87,14 +87,14 @@ function run(){
             removeCollapseElm : function (event) {
                 let id = event.target.parentNode.getAttribute("data-main-cat-id");
                 Swal.fire({
-                    title: 'آیا از حذف این عبارت مطمئن هستید؟',
-                    text: "غیر قابل بازگشت خواهد بود",
+                    title: 'Are You Sure?',
+                    text: "It's Can't Be Reverse",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'بله مطمئنم',
-                    cancelButtonText: 'خیر شک دارم'
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.value) {
                         $.ajax({
@@ -115,16 +115,13 @@ function run(){
                                     event.target.parentNode.parentNode.removeChild(event.target.parentNode);
                                     Swal.fire({
                                         icon: 'success',
-                                        // title: 'Oops...',
                                         text: msg.message,
-                                        // footer: '<a href>Why do I have this issue?</a>'
                                     })
                                 }else {
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: "مشکلی پیش آمده است",
-                                        // footer: '<a href>Why do I have this issue?</a>'
+                                        text: "Oops...",
                                     })
                                 }
                             });
@@ -137,15 +134,15 @@ function run(){
                 let id = parentElm.getAttribute("data-main-cat-id");
                 let message = parentElm.querySelector("div:first-child a").innerText;
                 Swal.fire({
-                    title: 'متن خود را درج کنید',
+                    title: 'Type Your Text',
                     inputValue: message,
                     input: 'text',
                     inputAttributes: {
                         autocapitalize: 'off'
                     },
                     showCancelButton: true,
-                    confirmButtonText: 'ثبت',
-                    cancelButtonText: 'لغو',
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel',
                     showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.value) {
@@ -173,7 +170,7 @@ function run(){
                                     Swal.fire({
                                         icon: 'error',
                                         title: 'Oops...',
-                                        text: "مشکلی پیش آمده است",
+                                        text: "Oops...",
                                     })
                                 }
                             });
