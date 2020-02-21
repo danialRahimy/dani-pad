@@ -4,7 +4,10 @@ window.dani = {
 
         // get pathname EX: https://iransamaneh.com/fa/news/12 , pathname is fa/news/12
         var path = location.pathname;
+        console.log(path);
         for (var j = 0 ; j < elmsSelector.length ; j++){
+            console.log(document.querySelectorAll( elmsSelector[j] ) );
+            console.log( elmsSelector[j] );
             for (var i = 0 ; i < document.querySelectorAll(elmsSelector[j]).length ; i++){
                 var href = document.querySelectorAll(elmsSelector[j])[i].getAttribute("href");
 
@@ -16,15 +19,29 @@ window.dani = {
     },
     // dani.activeLinkAsUrl([".className a",".className2 a"]);
 
-    randomCharacter: function randomCharacter(count = 10) {
+    randomCharacter: function randomCharacter(count = 10, type = "mix") {
+
         let letters = {
             "lower": ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
         };
 
+        let numbers = [0,1,2,3,4,5,6,7,8,9];
+
         let outPut = "";
 
         for (let i = 0 ; i < count ; i++){
-            outPut += letters.lower[Math.floor(Math.random() * 26 )];
+            if (type === "mix"){
+                let which = Math.floor(Math.random() * 2 );
+                switch (which) {
+                    case 1 : outPut += letters.lower[Math.floor(Math.random() * 26 )];
+                        break;
+                    case 2 : outPut += numbers[Math.floor(Math.random() * 10 )];
+                }
+            }else if (type === "string"){
+                outPut += letters.lower[Math.floor(Math.random() * 26 )];
+            }else if (type === "number"){
+                outPut += numbers[Math.floor(Math.random() * 10 )];
+            }
         }
         return outPut;
     },
@@ -210,5 +227,37 @@ window.dani = {
         }
     },
     // removeClass([{"selector": "#IDName", "class": "className"}]);
+
+    empty: function empty(value){
+        if (value === ""){
+            return true
+        }
+        return false;
+    },
+    // empty(variableName);
+
+    getAllCookie: function getAllCookie(name){
+        let allCookieArray = document.cookie.split(";");
+        let allCookie = [];
+        let targetCookie = "";
+        for (let i = 0 ; i < allCookieArray.length ; i++){
+            let cookieArray = allCookieArray[i].split("=");
+            if (!dani.empty(name)){
+                if (cookieArray[0] === name){
+                    targetCookie = cookieArray[1];
+                }
+            }
+            let data = {
+                "name" : cookieArray[0],
+                "value" : cookieArray[1],
+            };
+            allCookie.push(data);
+        }
+        if (!dani.empty(targetCookie)){
+            return targetCookie;
+        }
+        return allCookie;
+    }
+    // getAllCookie(cookieName); /*or get all cookies =>*/ getAllCookie();
 
 };
