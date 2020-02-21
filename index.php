@@ -19,7 +19,7 @@ $require = new required();
     <?= $require->indexFiles() ?>
     <?= $require->requiredFiles() ?>
 </head>
-<body>
+<body data-direction="ltr">
 <section id="gitGuide">
 
 </section>

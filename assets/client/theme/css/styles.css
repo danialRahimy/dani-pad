@@ -8,17 +8,22 @@ body,a,p,h1,h2,h3,h4,h5,h6,div{
     margin: 0;
 }
 
+body[data-direction=rtl] input,
+body[data-direction=rtl] textarea,
+body[data-direction=rtl] p{
+    direction: rtl;
+    text-align: right;
+}
+
+body[data-direction=ltr] input,
+body[data-direction=ltr] textarea,
+body[data-direction=ltr] p{
+    direction: ltr;
+    text-align: left;
+}
+
 p{
     white-space: pre-line;
-}
-
-input,textarea{
-    direction: rtl;
-}
-
-p{
-    text-align: right;
-    direction: rtl;
 }
 
 .imgs img{
@@ -116,4 +121,19 @@ p{
 
 [data-main-cat-id][data-status=done]::before{
     background-image: url("/assets/client/theme/img/icon/goal.png");
+}
+[data-direction=changeDirection]{
+    padding-top: 15px;
+}
+[data-direction=changeDirection] [data-direction]{
+    padding: 2px 10px;
+    border:1px solid #c7c7c7;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #c7c7c7;
+}
+
+[data-direction=changeDirection] [data-direction].active{
+    color: #4b4b4b;
+    border-color: #4b4b4b;
 }

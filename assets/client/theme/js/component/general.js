@@ -181,7 +181,8 @@ function run(){
     });
     Vue.component("top-header",{
         template: `
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Dani pad :D</a>
             <div class=" navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
@@ -193,8 +194,37 @@ function run(){
                 <input class="form-control mr-sm-2" type="search" placeholder="live search" aria-label="Search" disabled>
                 </form>
             </div>
-        </nav>
-        `
+            </nav>
+            <div class="px-3">
+                <div data-direction="changeDirection">
+                    <a @click="changeDirection($event)" data-direction="ltr" class="active">ltr</a>
+                    <a @click="changeDirection($event)" data-direction="rtl">rtl</a>
+                </div>
+            </div>
+        </div>
+        `,
+        data : function (){
+            return {
+                dani : window.dani,
+                VueHelpers : VueHelpers,
+            }
+        },
+        methods: {
+            changeDirection: function (event) {
+                let direction = event.target.getAttribute("data-direction");
+                document.getElementsByTagName("body")[0].setAttribute("data-direction",direction);
+                dani.removeClass([{"selector": "[data-direction=changeDirection] [data-direction]", "class": "active"}]);
+                event.target.classList.add("active");
+                var d = new Date();
+                d.setTime(d.getTime() + (1000*24*60*60*1000));
+                var expires = "expires=" + d.toGMTString();
+                document.cookie = "direction=" + direction + ";expires=" + expires + ";path=/";
+            }
+        },
+        mounted: function () {
+            VueHelpers.manageCookie();
+        }
+
     });
     Vue.component("color-box",{
         props: {
