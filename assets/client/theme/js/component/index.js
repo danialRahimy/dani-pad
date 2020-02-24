@@ -88,7 +88,7 @@ function indexComponent (){
                     <div class="mb-2 text-right">
                         <a class="icons" :data-related-values="index" @click="addParts($event,'values')" title="Add"><img src="/assets/client/theme/img/icon/pencil.png" alt="Add"></a>
                     </div>
-                    <p class="alert alert-info" :data-related-description="index">{{data.description}}</p>
+                    <p v-if="data.description" class="alert alert-info" :data-related-description="index">{{data.description}}</p>
                     <div v-for="(data2,index2) in data.values">
                         <div :class="'alert btn-' + data2.color + ' parent-row'" :data-related-values="index+'-'+index2">
                             <p>{{data2.value}}</p>
