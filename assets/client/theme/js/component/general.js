@@ -1,17 +1,29 @@
 var dataFromCache = {
     mainCat : "",
 };
-
+var config = {
+    addresses: {
+        api: "/assets/admin/api.php"
+    }
+};
 function getDataFromCache() {
-    let random = Math.random();
-    $.get("/assets/data/mainCat.json?" + random + "=" + random , function (data) {
-        if (data.hasOwnProperty(undefined)){
-            setTimeout( getDataFromCache,50)
-        }else {
-            dataFromCache.mainCat = data;
-            run();
+    $.ajax({
+        method: "POST",
+        url: config.addresses.api,
+        data: {
+            type: "mainCategory",
+            subType: "get",
         }
-    });
+    })
+        .done(function( data ) {
+            data = JSON.parse(data);
+            if (data.hasOwnProperty(undefined)) {
+                setTimeout(getDataFromCache, 50)
+            } else {
+                dataFromCache.mainCat = data;
+                run();
+            }
+        });
 }
 
 getDataFromCache();

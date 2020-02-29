@@ -32,4 +32,8 @@ if ($_POST["type"] === "mainCategory"){
         $mainCat->editParts($_POST["data"]);
     }
 
+    if ($_POST["subType"] === "get"){
+        echo json_encode($mainCat->getData(),JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY);
+    }
+
 }

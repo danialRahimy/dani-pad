@@ -21,7 +21,7 @@ trait JsonModel
     /**
      * @return mixed
      */
-    private function getData (){
+    public function getData (){
 
         return json_decode(file_get_contents($this->fileAddress),JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY);
 
@@ -32,7 +32,7 @@ trait JsonModel
      *
      * @return false|string
      */
-    private function putData ($data){
+    public function putData ($data){
 
         file_put_contents($this->fileAddress,json_encode($data,JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY | JSON_PRETTY_PRINT));
 
