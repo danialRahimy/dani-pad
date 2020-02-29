@@ -18,6 +18,7 @@ function indexComponent (){
             return {
                 dani: window.dani,
                 VueHelpers : VueHelpers,
+                config: config, // config general
                 dataNeedToSend: {
                     "color" : "secondary"
                 }
@@ -49,7 +50,7 @@ function indexComponent (){
 
                 $.ajax({
                     method: "POST",
-                    url: "/assets/admin/api.php",
+                    url: this.config.addresses.api,
                     data: {
                         type: "mainCategory",
                         subType: "add",
@@ -104,6 +105,7 @@ function indexComponent (){
                 dataFromCache : dataFromCache, // all data got from jsons
                 dani: window.dani, // it's a library form myself
                 VueHelpers: VueHelpers, // vue heplers
+                config: config, // config general
                 dataNeedToSend: {
                     "color" : "secondary"
                 } // data need to send to the server
@@ -142,7 +144,7 @@ function indexComponent (){
                         // send data to server
                         $.ajax({
                             method: "POST",
-                            url: "/assets/admin/api.php",
+                            url: this.config.addresses.api,
                             data: {
                                 type: "mainCategory",
                                 subType: "addParts",
@@ -232,7 +234,7 @@ function indexComponent (){
                         // send data to server
                         $.ajax({
                             method: "POST",
-                            url: "/assets/admin/api.php",
+                            url: this.config.addresses.api,
                             data: {
                                 type: "mainCategory",
                                 subType: "editParts",
@@ -288,7 +290,7 @@ function indexComponent (){
                     if (result.value) {
                         $.ajax({
                             method: "POST",
-                            url: "/assets/admin/api.php",
+                            url: this.config.addresses.api,
                             data: {
                                 type: "mainCategory",
                                 subType: "removeParts",
