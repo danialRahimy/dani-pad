@@ -97,7 +97,7 @@ function run(){
 
             },
             removeCollapseElm : function (event) {
-                let id = event.target.parentNode.getAttribute("data-main-cat-id");
+                let id = event.target.parentNode.parentNode.parentNode.getAttribute("data-main-cat-id");
                 Swal.fire({
                     title: 'Are You Sure?',
                     text: "It's Can't Be Reverse",
@@ -116,7 +116,7 @@ function run(){
                                 type: "mainCategory",
                                 subType: "remove",
                                 data: {
-                                    id: id
+                                    id: this.dataFromCache.mainCat[id].id
                                 }
                             }
                         })
@@ -124,7 +124,7 @@ function run(){
                                 msg = JSON.parse(msg);
                                 if (msg.status === "success"){
                                     dataFromCache.mainCat.splice(id, 1);
-                                    event.target.parentNode.parentNode.removeChild(event.target.parentNode);
+                                    event.target.parentNode.parentNode.parentNode.parentNode.removeChild(event.target.parentNode.parentNode.parentNode);
                                     Swal.fire({
                                         icon: 'success',
                                         text: msg.message,

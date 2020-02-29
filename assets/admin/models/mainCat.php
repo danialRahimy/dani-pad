@@ -1,14 +1,20 @@
 <?php
 namespace models;
-require_once "JsonModel.php";
+require_once "traits/JsonModel.php";
+require_once "notes.php";
+
+use models\notes;
 
 class mainCat{
 
     use JsonModel;
 
+    private $noteClass;
+
     public function __construct(){
-        $this->setFileAddress("../data/mainCat.json");
+        $this->setFileAddress("../data/cache/mainCat.json");
         $this->setSuccessMessage("Done");
+        $this->noteClass = new notes();
     }
 
     /**
@@ -17,15 +23,16 @@ class mainCat{
     public function add ($data){
 
         $oldContent = $this->getData ();
+
         $oldContent[] = array(
             "id"=>intval($data["id"]),
             "title"=>$data["title"],
             "status"=>$data["status"],
             "color"=>$data["color"],
-            "description"=>$data["description"],
-            "values"=>array(),
+            "description"=>$data["description"]
         );
 
+        $this->noteClass->createPart($data["id"]);
         echo $this->putData ($oldContent);
     }
 
@@ -42,6 +49,7 @@ class mainCat{
             $oldContent = array();
         }
 
+        $this->noteClass->removeAllParts($data);
         echo $this->putData($oldContent);
 
     }
@@ -54,51 +62,6 @@ class mainCat{
         $oldContent = $this->getData();
 
         $oldContent[intval($data["id"])]["title"] = $data["values"];
-
-        echo $this->putData($oldContent);
-
-    }
-
-    /**
-     * @param $data
-     */
-    public function addParts ($data){
-
-        $oldContent = $this->getData();
-
-        $oldContent[intval($data["id"])][$data["value"]][] = $data["values"];
-
-        echo $this->putData($oldContent);
-
-    }
-
-    /**
-     * @param $data
-     */
-    public function removeParts ($data){
-
-        $oldContent = $this->getData();
-        $oldContent = json_decode(json_encode($oldContent), true);
-
-        if (count($oldContent[intval($data["id"])][$data["value"]]) === 1){
-            $oldContent[intval($data["id"])][$data["value"]] = array();
-        }else{
-            array_splice($oldContent[intval($data["id"])][$data["value"]],intval($data["subId"]),1);
-        }
-
-        echo $this->putData($oldContent);
-
-    }
-
-    /**
-     * @param $data
-     */
-    public function editParts ($data){
-
-        $oldContent = $this->getData();
-
-        $oldContent[intval($data["id"]["parent"])][$data["value"]][intval($data["id"]["child"])]["color"] = $data["values"]["color"];
-        $oldContent[intval($data["id"]["parent"])][$data["value"]][intval($data["id"]["child"])]["value"] = $data["values"]["value"];
 
         echo $this->putData($oldContent);
 

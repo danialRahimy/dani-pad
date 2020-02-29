@@ -1,39 +1,54 @@
 <?php
 
 require_once "models/mainCat.php";
+require_once "models/notes.php";
 
 use models\mainCat;
+use models\notes;
 
-$mainCat = new mainCat();
+$mainCatClass = new mainCat();
+$notesClass = new notes();
 
 if ($_POST["type"] === "mainCategory"){
 
     if ($_POST["subType"] === "add"){
-        $mainCat->add($_POST["data"]);
+        $mainCatClass->add($_POST["data"]);
     }
 
     if ($_POST["subType"] === "remove"){
-        $mainCat->remove($_POST["data"]);
+        $mainCatClass->remove($_POST["data"]);
     }
 
     if ($_POST["subType"] === "edit"){
-        $mainCat->edit($_POST["data"]);
+        $mainCatClass->edit($_POST["data"]);
     }
 
     if ($_POST["subType"] === "addParts"){
-        $mainCat->addParts($_POST["data"]);
+        $notesClass->addParts($_POST["data"]);
     }
 
     if ($_POST["subType"] === "removeParts"){
-        $mainCat->removeParts($_POST["data"]);
+        $notesClass->removeParts($_POST["data"]);
     }
 
     if ($_POST["subType"] === "editParts"){
-        $mainCat->editParts($_POST["data"]);
+        $notesClass->editParts($_POST["data"]);
     }
 
     if ($_POST["subType"] === "get"){
-        echo json_encode($mainCat->getData(),JSON_UNESCAPED_UNICODE | JSON_OBJECT_AS_ARRAY);
+
+        $data = array(
+            "mainCat" => $mainCatClass->getData(),
+            "notes"   => $notesClass->getData(),
+        );
+
+        for ($i = 0 ; $i < count($data["mainCat"]) ; $i++ ){
+            $id = $data["mainCat"][$i]["id"];
+            $data["mainCat"][$i]["values"] = $data["notes"][$id];
+        }
+
+        echo json_encode($data["mainCat"],JSON_OBJECT_AS_ARRAY | JSON_UNESCAPED_UNICODE);
+
     }
 
 }

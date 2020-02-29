@@ -1,0 +1,46 @@
+{
+    "2": [
+        {
+            "color": "secondary",
+            "value": "امکان افزودن تو در تو موضوعات و هر موضوع امکان افزودن نوت"
+        },
+        {
+            "color": "secondary",
+            "value": "status برای هر نوت"
+        },
+        {
+            "color": "secondary",
+            "value": "drag and drop موضوعات"
+        },
+        {
+            "color": "secondary",
+            "value": "drag and drop نوت ها"
+        },
+        {
+            "color": "success",
+            "value": "جدا کردن فایل های کش"
+        },
+        {
+            "color": "success",
+            "value": "تغییر آدرس فایل های کش"
+        },
+        {
+            "color": "success",
+            "value": "اینجاد متودی برای دریافت دیتا در کلاینت"
+        }
+    ],
+    "3": [
+        {
+            "color": "secondary",
+            "value": "kkkyyyy"
+        },
+        {
+            "color": "secondary",
+            "value": "1"
+        },
+        {
+            "color": "secondary",
+            "value": "2"
+        }
+    ]
+}

@@ -134,7 +134,7 @@ function indexComponent (){
                     .then((result) => {
                     if (result.value) {
                         let data = {
-                            "id": id, // index of category on mainCat
+                            "id": thisV.dataFromCache.mainCat[id].id, // index of category on mainCat
                             "values": {
                                 "color": this.dataNeedToSend.color, // get color
                                 "value": result.value, // get text of value
@@ -221,7 +221,7 @@ function indexComponent (){
                         // create data need to send
                         let data = {
                             "id": {
-                                "parent": idArray[0], // index of category on
+                                "parent": thisV.dataFromCache.mainCat[idArray[0]].id, // index of category on
                                 "child": idArray[1] // index of value text on category
                             },
                             "values": {
@@ -272,7 +272,7 @@ function indexComponent (){
 
                 // data
                 let data = {
-                    "id": idArray.split("-")[0],
+                    "id": this.dataFromCache.mainCat[idArray.split("-")[0]].id,
                     "subId": idArray.split("-")[1],
                     "value": value
                 };
@@ -300,7 +300,7 @@ function indexComponent (){
                             .done(function( msg ) {
                                 msg = JSON.parse(msg);
                                 if (msg.status === "success"){
-                                    dataFromCache.mainCat[data.id][value].splice(data.subId, 1);
+                                    dataFromCache.mainCat[idArray.split("-")[0]][value].splice(data.subId, 1);
                                     Swal.fire({
                                         icon: 'success',
                                         text: msg.message,
