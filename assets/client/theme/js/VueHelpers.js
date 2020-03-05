@@ -30,7 +30,6 @@ let VueHelpers = {
     manageCookie : function () {
         // set direction
         let cookieDirection = dani.getAllCookie("direction");
-        console.log(cookieDirection);
         if (!dani.empty(cookieDirection)){
             document.getElementsByTagName("body")[0].setAttribute("data-direction",cookieDirection);
             dani.removeClass([{"selector": "[data-direction=changeDirection] [data-direction]", "class": "active"}]);

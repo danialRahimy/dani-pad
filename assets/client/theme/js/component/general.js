@@ -13,6 +13,7 @@ function getDataFromCache() {
         data: {
             type: "mainCategory",
             subType: "get",
+            which: "get"
         }
     })
         .done(function( data ) {
@@ -20,7 +21,8 @@ function getDataFromCache() {
             if (data.hasOwnProperty(undefined)) {
                 setTimeout(getDataFromCache, 50)
             } else {
-                dataFromCache.mainCat = data;
+                dataFromCache = data;
+                console.log(data);
                 run();
             }
         });
@@ -49,7 +51,7 @@ function run(){
             },
             status:{
                 type: String,
-                required: true
+                required: false
             }
         },
         template: `
@@ -115,7 +117,9 @@ function run(){
                             data: {
                                 type: "mainCategory",
                                 subType: "remove",
+                                which: "mainCat",
                                 data: {
+                                    index: id,
                                     id: this.dataFromCache.mainCat[id].id
                                 }
                             }
@@ -164,6 +168,7 @@ function run(){
                             data: {
                                 type: "mainCategory",
                                 subType: "edit",
+                                which: "mainCat",
                                 data: {
                                     id: id,
                                     values: result.value

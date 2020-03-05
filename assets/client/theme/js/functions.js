@@ -4,10 +4,7 @@ window.dani = {
 
         // get pathname EX: https://iransamaneh.com/fa/news/12 , pathname is fa/news/12
         var path = location.pathname;
-        console.log(path);
         for (var j = 0 ; j < elmsSelector.length ; j++){
-            console.log(document.querySelectorAll( elmsSelector[j] ) );
-            console.log( elmsSelector[j] );
             for (var i = 0 ; i < document.querySelectorAll(elmsSelector[j]).length ; i++){
                 var href = document.querySelectorAll(elmsSelector[j])[i].getAttribute("href");
 
@@ -20,9 +17,10 @@ window.dani = {
     // dani.activeLinkAsUrl([".className a",".className2 a"]);
 
     randomCharacter: function randomCharacter(count = 10, type = "mix") {
-
+        count = parseInt(count);
         let letters = {
-            "lower": ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+            "lower": ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
+            "capital": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
         };
 
         let numbers = [0,1,2,3,4,5,6,7,8,9];
@@ -31,14 +29,24 @@ window.dani = {
 
         for (let i = 0 ; i < count ; i++){
             if (type === "mix"){
-                let which = Math.floor(Math.random() * 2 );
+                let which = Math.floor(Math.random() * 2 + 1 );
                 switch (which) {
-                    case 1 : outPut += letters.lower[Math.floor(Math.random() * 26 )];
+                    case 1 : which = Math.floor(Math.random() * 2 + 1 );
+                        switch (which) {
+                            case 1 : outPut += letters.lower[Math.floor(Math.random() * 26 )];
+                                break;
+                            case 2 : outPut += letters.capital[Math.floor(Math.random() * 26 )];
+                        }
                         break;
                     case 2 : outPut += numbers[Math.floor(Math.random() * 10 )];
                 }
             }else if (type === "string"){
-                outPut += letters.lower[Math.floor(Math.random() * 26 )];
+                let which = Math.floor(Math.random() * 2 + 1 );
+                switch (which) {
+                    case 1 : outPut += letters.lower[Math.floor(Math.random() * 26 )];
+                        break;
+                    case 2 : outPut += letters.capital[Math.floor(Math.random() * 26 )];
+                }
             }else if (type === "number"){
                 outPut += numbers[Math.floor(Math.random() * 10 )];
             }

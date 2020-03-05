@@ -4,13 +4,13 @@
 namespace models;
 require_once "JsonModel.php";
 
-trait notesTrait
+trait tasksTrait
 {
 
     use JsonModel;
 
     public function __construct(){
-        $this->setFileAddress("../data/cache/notes.json");
+        $this->setFileAddress("../data/cache/tasks.json");
         $this->setSuccessMessage("Done");
     }
 
@@ -30,6 +30,9 @@ trait notesTrait
     public function add ($data){
 
         $oldContent = $this->getData();
+
+        $data["values"]["NeedToStudy"] = intval($data["values"]["NeedToStudy"]);
+        $data["values"]["studied"] = array(0);
 
         $oldContent[$data["id"]][] = $data["values"];
 
@@ -76,6 +79,16 @@ trait notesTrait
 
         $oldContent[$data["id"]["parent"]][intval($data["id"]["child"])]["color"] = $data["values"]["color"];
         $oldContent[$data["id"]["parent"]][$data["id"]["child"]]["value"] = $data["values"]["value"];
+
+        echo $this->putData($oldContent);
+
+    }
+
+    public function addTime($data){
+
+        $oldContent = $this->getData();
+
+        $oldContent[$data["id"]["parent"]][intval($data["id"]["child"])]["studied"][] = floatval($data["values"]["value"]);
 
         echo $this->putData($oldContent);
 

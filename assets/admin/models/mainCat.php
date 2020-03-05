@@ -2,19 +2,25 @@
 namespace models;
 require_once "traits/JsonModel.php";
 require_once "notes.php";
+require_once "tasks.php";
+require_once "topics.php";
 
 use models\notes;
+use models\topics;
+use models\tasks;
 
 class mainCat{
 
     use JsonModel;
 
     private $noteClass;
+    private $tasksClass;
 
     public function __construct(){
         $this->setFileAddress("../data/cache/mainCat.json");
         $this->setSuccessMessage("Done");
         $this->noteClass = new notes();
+        $this->tasksClass = new tasks();
     }
 
     /**
@@ -32,7 +38,9 @@ class mainCat{
             "description"=>$data["description"]
         );
 
-        $this->noteClass->createPart($data["id"]);
+        $this->noteClass->create($data["id"]);
+        $this->tasksClass->create($data["id"]);
+
         echo $this->putData ($oldContent);
     }
 
@@ -44,12 +52,12 @@ class mainCat{
         $oldContent = $this->getData();
 
         if (count($oldContent) > 1){
-            array_splice($oldContent,intval($data["id"]),1);
+            array_splice($oldContent,intval($data["index"]),1);
         }else{
             $oldContent = array();
         }
 
-        $this->noteClass->removeAllParts($data);
+//        $this->noteClass->removeAll($data);
         echo $this->putData($oldContent);
 
     }
@@ -67,4 +75,12 @@ class mainCat{
 
     }
 
+    private function returnBool ($data){
+
+        if ($data == "true")
+            return true;
+        elseif ($data == "false")
+            return false;
+
+    }
 }
