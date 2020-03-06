@@ -34,7 +34,9 @@ function indexComponent (){
                     let length2 = length;
                     length2 -= 1;
                     if (length > 0){
-                        return ++dataFromCache.mainCat[length2].id;
+                        let id = dataFromCache.mainCat[length2].id;
+                        id += 1;
+                        return id;
                     }else {
                         return 1;
                     }
