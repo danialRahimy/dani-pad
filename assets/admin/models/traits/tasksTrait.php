@@ -78,7 +78,7 @@ trait tasksTrait
         $oldContent = $this->getData();
 
         $oldContent[$data["id"]["parent"]][intval($data["id"]["child"])]["color"] = $data["values"]["color"];
-        $oldContent[$data["id"]["parent"]][$data["id"]["child"]]["value"] = $data["values"]["value"];
+        $oldContent[$data["id"]["parent"]][intval($data["id"]["child"])]["description"] = $data["values"]["description"];
 
         echo $this->putData($oldContent);
 

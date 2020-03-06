@@ -107,7 +107,7 @@ function indexComponent (){
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="topics-option">Topics Name</label>
                         </div>
-                        <select class="custom-select" id="topics-option">
+                        <select class="custom-select topics-option">
                             <option v-for="(value,index) in dataFromCache.topics" v-if="value.active" :value="index">{{value.name}}</option>
                         </select>
                         <img style="height: 38px;width: 38px;cursor: pointer" @click="addNewTopic($event)" src="/assets/client/theme/img/icon/plus.png" alt="Add New Topic">
@@ -119,7 +119,7 @@ function indexComponent (){
                         <div class="input-group-prepend">
                             <span class="input-group-text">Time You Need</span>
                         </div>
-                        <input id="time-you-need" type="number" min="1" step="0.25" value="1.25" class="form-control" style="text-align: center">
+                        <input type="number" min="1" step="0.25" value="1.25" class="form-control time-you-need" style="text-align: center">
                         <div class="input-group-append">
                             <span class="input-group-text">hour</span>
                         </div>
@@ -130,7 +130,7 @@ function indexComponent (){
                         <div class="input-group-prepend">
                             <span class="input-group-text">Description</span>
                         </div>
-                        <input type="text" id="description" class="form-control" placeholder="Type The Description">
+                        <textarea class="form-control description" placeholder="Type The Description"></textarea>
                     </div>
                 </div>
                 </div>
@@ -154,9 +154,9 @@ function indexComponent (){
                 let thisV = this;
 
                 const form = document.querySelector("form[name=add-new-task-" + id + "]");
-                let topicID = form.querySelector("#topics-option").options[form.querySelector("#topics-option").selectedIndex].value;
-                let timeYouNeed = parseFloat(form.querySelector("#time-you-need").value);
-                let description = form.querySelector("#description").value;
+                let topicID = form.querySelector(".topics-option").options[form.querySelector(".topics-option").selectedIndex].value;
+                let timeYouNeed = parseFloat(form.querySelector(".time-you-need").value);
+                let description = form.querySelector(".description").value;
 
                 /*** get data and send to server ***/
                 // get text of value of user
@@ -361,8 +361,9 @@ function indexComponent (){
                                 <td><p>{{data2.description}}</p></td>
                                 <td width="100">{{data2.NeedToStudy}}</td>
                                 <td width="100">{{data2.studied.reduce((a, b) => a + b, 0)}}</td>
-                                <td width="100">                           
+                                <td width="140">                           
                                     <a class="icons" :data-color="data2.color" @click="addAction($event,'task')" title="Add Time"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/schedule.png" alt="Add Done Time"></a>
+                                    <a class="icons" :data-color="data2.color" @click="editAction($event,'task')" title="Edit Description"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/eraser.png" alt="Edit Description"></a>
                                     <a class="icons" :data-color="data2.color" @click="removeAction($event,'task')" title="Remove"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
                                 </td>
                             </tr>
@@ -545,6 +546,9 @@ function indexComponent (){
                     case "note":
                         this.edit__note(event,value);
                         break;
+                    case "task":
+                        this.edit__task(event,value);
+                        break;
 
                 }
             },
@@ -655,12 +659,12 @@ function indexComponent (){
                 }
 
                 /*** get value text before edit user wrote ***/
-                let message = event.target.parentNode.parentNode.querySelector("p").innerText;
+                let message = event.target.parentNode.parentNode.parentNode.querySelector("p").innerText;
 
                 /*** ask text value and save them  ***/
                 // get text of value
                 Swal.fire({
-                    title: 'Type Your Text',
+                    title: 'Type Your Description',
                     inputValue: message,
                     input: 'textarea',
                     inputAttributes: {
@@ -681,7 +685,7 @@ function indexComponent (){
                             },
                             "values": {
                                 "color": this.dataNeedToSend.color, // color choosen
-                                "value": result.value, // text of value wrote
+                                "description": result.value, // text of value wrote
                             },
                             "value": value, // it's show in which property on the category need to save
                         };
@@ -703,7 +707,7 @@ function indexComponent (){
                                 if (msg.status === "success"){
                                     // if success push data that save to the mainCat JUST FOR SHOW AND RENDER IN PAGE
                                     dataFromCache.mainCat[idArray[0]][value][idArray[1]].color = thisV.dataNeedToSend.color;
-                                    dataFromCache.mainCat[idArray[0]][value][idArray[1]].value = result.value;
+                                    dataFromCache.mainCat[idArray[0]][value][idArray[1]].description = result.value;
                                     Swal.fire({
                                         icon: 'success',
                                         text: msg.message,
