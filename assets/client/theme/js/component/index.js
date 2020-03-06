@@ -356,9 +356,14 @@ function indexComponent (){
                             </tr>
                         </thead>
                         <tbody>
+                            <tr v-if="sumValues(data.task,'NeedToStudy','number') > 0" class="btn-light" :data-related-task="index">
+                                <th width="150">Sum</th>
+                                <th><p>Sum Values</p></th>
+                                <th width="100">{{sumValues(data.task,'NeedToStudy','number')}}</th>
+                                <th width="100">{{sumValues(data.task,'studied','array')}}</th>
+                                <th width="140"></th>
+                            </tr>
                             <tr v-for="(data2,index2) in data.task" v-if="data2.active" :class="'btn-' + data2.color" :data-related-task="index + '-' + index2">
-                                <td v-show="false">{{componentData.sum.NeedToStudy = parseFloat(componentData.sum.NeedToStudy) + parseFloat(data2.NeedToStudy)}}
-                                {{componentData.sum.studied = parseFloat(componentData.sum.studied) + parseFloat(data2.studied)}}</td>
                                 <td width="150">{{data2.topicName}}</td>
                                 <td><p>{{data2.description}}</p></td>
                                 <td width="100">{{data2.NeedToStudy}}</td>
@@ -368,13 +373,6 @@ function indexComponent (){
                                     <a class="icons" :data-color="data2.color" @click="editAction($event,'task')" title="Edit Description"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/eraser.png" alt="Edit Description"></a>
                                     <a class="icons" :data-color="data2.color" @click="removeAction($event,'task')" title="Remove"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
                                 </td>
-                            </tr>
-                            <tr v-if="componentData.sum.NeedToStudy > 0 " class="btn-dark" :data-related-task="index">
-                                <th width="150"></th>
-                                <th></th>
-                                <th width="100">{{componentData.sum.NeedToStudy}}</th>
-                                <th width="100">{{componentData.sum.studied}}</th>
-                                <th width="140"></th>
                             </tr>
                         </tbody>
                     </table>
@@ -857,8 +855,18 @@ function indexComponent (){
             addNew: function () {
                 this.componentData.addNew = !this.componentData.addNew;
             },
-            plusValues : function (source,value) {
-                source = parseFloat(source) + parseFloat(value);
+            sumValues : function (source,value,type) {
+                let sum = 0 ;
+                for (let i = 0 ; i < source.length ; i++){
+                    if (type === "number"){
+                        sum += parseFloat(source[i][value]);
+                    }else if (type === "array"){
+                        for (let j = 0 ; j < source[i][value].length ; j++){
+                            sum += parseFloat(source[i][value][j]);
+                        }
+                    }
+                }
+                return sum;
             }
         },
         computed : {
