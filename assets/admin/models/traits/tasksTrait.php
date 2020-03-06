@@ -31,7 +31,7 @@ trait tasksTrait
 
         $oldContent = $this->getData();
 
-        $data["values"]["NeedToStudy"] = intval($data["values"]["NeedToStudy"]);
+        $data["values"]["NeedToStudy"] = floatval($data["values"]["NeedToStudy"]);
         $data["values"]["studied"] = array(0);
 
         $oldContent[$data["id"]][] = $data["values"];

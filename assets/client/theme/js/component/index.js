@@ -263,7 +263,7 @@ function indexComponent (){
                 let thisV = this;
 
                 const form = document.querySelector("form[name=add-new-task-" + id + "]");
-                let topicID = form.querySelector("#topics-option").options[form.querySelector("#topics-option").selectedIndex].value;
+                let topicID = form.querySelector(".topics-option").options[form.querySelector(".topics-option").selectedIndex].value;
 
                 let data = {
                     "values": {
