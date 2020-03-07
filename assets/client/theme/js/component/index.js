@@ -121,7 +121,7 @@ function indexComponent (){
                         <div class="input-group-prepend">
                             <span class="input-group-text">Time You Need</span>
                         </div>
-                        <input type="number" min="1" step="0.25" value="1.25" class="form-control time-you-need" style="text-align: center">
+                        <input type="number" min="1" step="0.015" value="1.25" class="form-control time-you-need" style="text-align: center">
                         <div class="input-group-append">
                             <span class="input-group-text">hour</span>
                         </div>
@@ -498,7 +498,7 @@ function indexComponent (){
                     input: 'number',
                     inputAttributes: {
                         autocapitalize: 'off',
-                        step: 0.25,
+                        step: 0.015,
                         value: 0.25
                     },
                     showCancelButton: true,
