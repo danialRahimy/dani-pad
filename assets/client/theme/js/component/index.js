@@ -361,15 +361,15 @@ function indexComponent (){
                             <tr v-if="sumValues(data.task,'NeedToStudy','number') > 0" class="btn-light" :data-related-task="index">
                                 <th width="150">Sum</th>
                                 <th><p>Sum Values</p></th>
-                                <th width="100">{{sumValues(data.task,'NeedToStudy','number')}}</th>
-                                <th width="100">{{sumValues(data.task,'studied','array')}}</th>
+                                <th width="100" :title="hourMinute(sumValues(data.task,'NeedToStudy','number'))">{{sumValues(data.task,'NeedToStudy','number')}}</th>
+                                <th width="100" :title="hourMinute(sumValues(data.task,'studied','array'))">{{sumValues(data.task,'studied','array')}}</th>
                                 <th width="140"></th>
                             </tr>
                             <tr v-for="(data2,index2) in data.task" v-if="data2.active" :class="'btn-' + data2.color" :data-related-task="index + '-' + index2">
                                 <td width="150">{{data2.topicName}}</td>
                                 <td><p>{{data2.description}}</p></td>
-                                <td width="100">{{data2.NeedToStudy}}</td>
-                                <td width="100">{{data2.studied.reduce((a, b) => a + b, 0)}}</td>
+                                <td width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy}}</td>
+                                <td width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0)}}</td>
                                 <td width="140">                           
                                     <a class="icons" :data-color="data2.color" @click="addAction($event,'task')" title="Add Time"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/schedule.png" alt="Add Done Time"></a>
                                     <a class="icons" :data-color="data2.color" @click="editAction($event,'task')" title="Edit Description"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/eraser.png" alt="Edit Description"></a>
@@ -869,6 +869,19 @@ function indexComponent (){
                     }
                 }
                 return sum.toFixed(2);
+            },
+            hourMinute: function (value) {
+
+                value = parseFloat(value);
+                let min = value * 60;
+
+                let hour = 0;
+                if (min > 60){
+                    hour = Math.floor(min / 60);
+                    min = ( min % 60 );
+                }
+
+                return hour + ":" + min.toFixed(0);
             }
         },
         computed : {
