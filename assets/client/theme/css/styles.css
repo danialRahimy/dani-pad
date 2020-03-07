@@ -98,6 +98,18 @@ body{
     background-color: #e2e2e2;
 }
 
+#main-category > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.on-drag-main-category{
+    width: 1108px;
+    z-index: 10000;
+    box-shadow: 0 0 6px 10px #cad7f6;
+
+}
+
 /* END */ /* CATEGORIES */
 
 /* START */ /* POPUP */

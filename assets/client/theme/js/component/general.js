@@ -52,16 +52,26 @@ function run(){
             status:{
                 type: String,
                 required: false
+            },
+            order:{
+                type: Number,
+                required: false,
+                default: 1
+            },
+            dragAble:{
+                type: Boolean,
+                required: false,
+                default: true
             }
         },
         template: `
-<section class="px-1" style="position: relative" :data-main-cat-id="mainCatId" :data-status="status">
+<section @mousedown="drag($event)" :data-drag-able="dragAble" data-pos-y="" :data-order="order" class="my-2" :style="'position: relative;order:' + order" :data-main-cat-id="mainCatId" :data-status="status">
     <div>
-        <a class="btn btn-block my-3" :class="'btn-outline-'+color" :data-color="color" data-toggle="collapse" :href="'#'+id" role="button" aria-expanded="false" :aria-controls="id" @click="changeBtn()">
+        <div class="btn btn-block" :class="'btn-outline-'+color" :data-color="color" data-toggle="collapse" :href="'#'+id" role="button" aria-expanded="false" :aria-controls="id" @click="changeBtn()">
             {{titleBtn}}
-        </a>
+        </div>
     </div>
-    <div class="collapse" :id="id">
+    <div class="collapse my-3" :id="id">
     <div class="card card-body">
         <slot></slot>
     </div>
@@ -77,6 +87,7 @@ function run(){
             return {
                 dani : window.dani,
                 dataFromCache: dataFromCache,
+                config: config
             }
         },
         methods: {
@@ -194,6 +205,126 @@ function run(){
                     }
                 });
             },
+            drag: function (event) {
+
+                let elm = event.target.parentNode.parentNode;
+
+                if (elm.getAttribute("data-drag-able") != "true"){
+                    return false;
+                }
+                let startMovingTimer = setTimeout(function () {
+
+                    if (!elm.classList.contains("on-drag-main-category"))
+                        elm.classList.add("on-drag-main-category");
+
+                    elm.setAttribute("data-offset-top",elm.offsetTop);
+
+                    elm.querySelector("div > div[data-toggle=collapse]").setAttribute("data-toggle","empty");
+
+                    document.onmousemove = function (event) {
+
+                        if (!elm.classList.contains("on-drag-main-category"))
+                            return false;
+
+                        let offset = $(elm).parent().offset();
+                        let top = event.clientY - offset.top - parseInt(elm.getAttribute("data-offset-top"))  + window.scrollY - 20 ;
+
+                        elm.style.top = top + "px";
+                        elm.setAttribute("data-pos-y",top);
+
+                    };
+
+                    document.onmouseup = function (event) {
+
+                        if (elm.classList.contains("on-drag-main-category"))
+                            elm.classList.remove("on-drag-main-category");
+
+                        let posX = parseInt(elm.getAttribute("data-pos-y"));
+                        let theOldOrder = parseInt(elm.getAttribute("data-order"));
+                        let siblings = elm.parentNode.querySelectorAll("[data-main-cat-id]");
+                        let order =  Math.floor(posX / 50);
+
+                        if (order < 0){
+                            order += 1;
+                            order += theOldOrder;
+                            if (order < 0){
+                                order = 0;
+                            }
+                        }else {
+                            order += theOldOrder;
+                        }
+
+                        for (let i = 0 ; i < siblings.length ; i++){
+                            let dataOrder = parseInt(siblings[i].getAttribute("data-order"));
+                            if (theOldOrder < order){
+
+                                if (dataOrder === theOldOrder){
+                                    siblings[i].setAttribute("data-order",order);
+                                    siblings[i].style.order = order;
+                                }
+
+                                if (dataOrder > theOldOrder && dataOrder <= order){
+                                    dataOrder -= 1;
+                                    siblings[i].setAttribute("data-order",dataOrder);
+                                    siblings[i].style.order = dataOrder;
+                                }
+                            }
+                            if (theOldOrder > order){
+
+                                if (dataOrder === theOldOrder){
+                                    siblings[i].setAttribute("data-order",order);
+                                    siblings[i].style.order = order;
+                                }
+
+                                if (dataOrder < theOldOrder && dataOrder >= order){
+                                    dataOrder += 1;
+                                    siblings[i].setAttribute("data-order",dataOrder);
+                                    siblings[i].style.order = dataOrder;
+                                }
+
+                            }
+
+                        }
+
+                        elm.style.top = "unset";
+
+                        setTimeout(function () {
+                            elm.querySelector("div > div[data-toggle=empty]").setAttribute("data-toggle","collapse");
+                        },300);
+
+                        let dataNeedToSend = [];
+
+                        for (let i = 0 ; i < siblings.length ; i++){
+                            let dataOrder = parseInt(siblings[i].getAttribute("data-order"));
+                            dataNeedToSend.push(dataOrder);
+                        }
+
+                        console.log(dataNeedToSend);
+                        $.ajax({
+                            method: "POST",
+                            url: config.addresses.api,
+                            data: {
+                                type: "mainCategory",
+                                subType: "updateOrder",
+                                which: "mainCat",
+                                data: {
+                                    values: dataNeedToSend
+                                }
+                            }
+                        });
+
+                        document.onmouseup = function () {};
+                        document.onmousemove = function () {};
+                    }
+
+                },500);
+
+                document.onmouseup = function () {
+                    if (startMovingTimer){
+                        clearTimeout(startMovingTimer);
+                    }
+                }
+            }
         }
     });
     Vue.component("top-header",{

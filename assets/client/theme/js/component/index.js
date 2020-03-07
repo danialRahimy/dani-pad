@@ -3,7 +3,7 @@ function indexComponent (){
     Vue.component("add-main-category",{
         template: `
             <div>
-                <collapse :id="'add-main-category-parent'" :status="'s'" :titleBtn="'Add New Category'" :color="'primary'">
+                <collapse :dragAble="false" :id="'add-main-category-parent'" :status="'s'" :titleBtn="'Add New Category'" :color="'primary'">
                     <div>
                         <color-box :clickOn="activeColorClicked"></color-box>
                         <input type="text" placeholder="Title" class="form-control mb-2">
@@ -48,7 +48,8 @@ function indexComponent (){
                     "color": this.dataNeedToSend.color,
                     "description": textareaValue,
                     "note": [],
-                    "task":[]
+                    "task":[],
+                    "order": dataFromCache.mainCat.length,
                 };
 
                 $.ajax({
@@ -330,8 +331,8 @@ function indexComponent (){
     Vue.component("main-category",{
         template :
             `
-            <div>
-                <collapse v-for="(data,index) in dataFromCache.mainCat" :status="data.status" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20,'string')" :titleBtn="data.title" :color="data.color">
+            <div style="position: relative">
+                <collapse v-for="(data,index) in dataFromCache.mainCat" :order="data.order" :status="data.status" :mainCatId="index" :key="data.id" :id="dani.randomCharacter(20,'string')" :titleBtn="data.title" :color="data.color">
                     <color-box :clickOn="activeColorClicked"></color-box>
                     <div class="mb-2 text-right">
                         <a class="icons" :data-related-task="index" @click="addNew()" title="Add task"><img src="/assets/client/theme/img/icon/clock.png" alt="Add task" class="add-task"></a>

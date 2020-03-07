@@ -35,7 +35,8 @@ class mainCat{
             "title"=>$data["title"],
             "status"=>$data["status"],
             "color"=>$data["color"],
-            "description"=>$data["description"]
+            "description"=>$data["description"],
+            "order"=>intval($data["order"])
         );
 
         $this->noteClass->create($data["id"]);
@@ -70,6 +71,21 @@ class mainCat{
         $oldContent = $this->getData();
 
         $oldContent[intval($data["id"])]["title"] = $data["values"];
+
+        echo $this->putData($oldContent);
+
+    }
+
+    /**
+     * @param $data
+     */
+    public function updateOrder ($data){
+
+        $oldContent = $this->getData();
+
+        for ($i = 0 ; $i < count($oldContent) ; $i++){
+            $oldContent[$i]["order"] =  intval($data["values"][$i]);
+        }
 
         echo $this->putData($oldContent);
 

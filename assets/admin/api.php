@@ -31,6 +31,10 @@ if ($_POST["type"] === "mainCategory"){
             $mainCatClass->edit($_POST["data"]);
         }
 
+        if ($_POST["subType"] === "updateOrder"){
+            $mainCatClass->updateOrder($_POST["data"]);
+        }
+
     }
 
     if ($_POST["which"] === "note"){
