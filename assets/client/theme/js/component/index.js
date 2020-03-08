@@ -369,8 +369,8 @@ function indexComponent (){
                             <tr v-for="(data2,index2) in data.task" v-if="data2.active" :class="'btn-' + data2.color" :data-related-task="index + '-' + index2">
                                 <td width="150">{{data2.topicName}}</td>
                                 <td><p>{{data2.description}}</p></td>
-                                <td width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy}}</td>
-                                <td width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0)}}</td>
+                                <td width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy.toFixed(3)}}</td>
+                                <td width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0).toFixed(3)}}</td>
                                 <td width="140">                           
                                     <a class="icons" :data-color="data2.color" @click="addAction($event,'task')" title="Add Time"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/schedule.png" alt="Add Done Time"></a>
                                     <a class="icons" :data-color="data2.color" @click="editAction($event,'task')" title="Edit Description"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/eraser.png" alt="Edit Description"></a>
@@ -869,7 +869,7 @@ function indexComponent (){
                         }
                     }
                 }
-                return sum.toFixed(2);
+                return sum.toFixed(3);
             },
             hourMinute: function (value) {
 
