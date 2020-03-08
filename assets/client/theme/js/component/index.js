@@ -508,7 +508,6 @@ function indexComponent (){
                     showLoaderOnConfirm: true,
                 }).then((result) => {
                     if (result.value) {
-                        console.log(result.value);
                         // create data need to send
                         let data = {
                             "id": {
