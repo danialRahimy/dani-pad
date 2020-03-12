@@ -122,7 +122,7 @@ function indexComponent (){
                         <div class="input-group-prepend">
                             <span class="input-group-text">Time You Need</span>
                         </div>
-                        <input type="number" min="1" step="0.015" value="1.25" class="form-control time-you-need" style="text-align: center">
+                        <input type="number" min="0.016" step="0.001" value="0.016" class="form-control time-you-need" style="text-align: center">
                         <div class="input-group-append">
                             <span class="input-group-text">hour</span>
                         </div>
@@ -460,9 +460,6 @@ function indexComponent (){
                                     msg = JSON.parse(msg);
                                     // if success data push to the array in mainCat JUST FOR SHOW ON THE PAGE
                                     if (msg.status === "success"){
-                                        console.log(dataFromCache.mainCat[id]);
-                                        console.log(id);
-                                        console.log(dataFromCache.mainCat);
                                         dataFromCache.mainCat[id][value].push(
                                             {
                                                 "color": thisV.dataNeedToSend.color,
@@ -499,8 +496,8 @@ function indexComponent (){
                     input: 'number',
                     inputAttributes: {
                         autocapitalize: 'off',
-                        step: 0.015,
-                        value: 0.25
+                        step: 0.001,
+                        value: 0.016
                     },
                     showCancelButton: true,
                     confirmButtonText: 'Submit',
