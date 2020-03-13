@@ -159,7 +159,7 @@ function run(){
                 let thisV = this;
                 let parentElm = event.target.parentNode.parentNode.parentNode;
                 let id = parentElm.getAttribute("data-main-cat-id");
-                let message = parentElm.querySelector("div:first-child a").innerText;
+                let message = parentElm.querySelector("div[data-toggle]").innerText;
                 Swal.fire({
                     title: 'Type Your Text',
                     inputValue: message,
@@ -298,8 +298,6 @@ function run(){
                             let dataOrder = parseInt(siblings[i].getAttribute("data-order"));
                             dataNeedToSend.push(dataOrder);
                         }
-
-                        console.log(dataNeedToSend);
                         $.ajax({
                             method: "POST",
                             url: config.addresses.api,
