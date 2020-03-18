@@ -15,7 +15,7 @@ $require = new required();
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Dani pad :D | it's a different note pad </title>
     <?= $require->indexFiles() ?>
     <?= $require->requiredFiles() ?>
 </head>
