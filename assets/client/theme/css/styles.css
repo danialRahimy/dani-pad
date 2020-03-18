@@ -246,3 +246,25 @@ body[data-direction=ltr] p{
 }
 
 /* END */ /* add-new-task */
+
+
+/* START */ /* HOME -- TASKS -- SORTING */
+
+[data-sort-table].active{
+    position: relative;
+}
+
+[data-sort-table].active::before{
+    content: "sort";
+    position: absolute;
+    top: 0;
+    right: -15px;
+    color: rgb(255, 0, 0);
+    padding: 9px;
+    border-radius: 5px;
+    writing-mode: vertical-rl;
+    font-size: 17px;
+}
+
+
+/* END */ /* HOME -- TASKS -- SORTING */

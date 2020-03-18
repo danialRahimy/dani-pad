@@ -269,3 +269,21 @@ window.dani = {
     // getAllCookie(cookieName); /*or get all cookies =>*/ getAllCookie();
 
 };
+
+Array.prototype.addAfter = function (value) {
+    for (let i = 0; i < this.length; i++) {
+        this[i] += value;
+    }
+};
+
+Array.prototype.addBefore = function (value) {
+    for (let i = 0; i < this.length; i++) {
+        this[i] = value + this[i];
+    }
+};
+
+Array.prototype.toFixed = function (value) {
+    for (let i = 0; i < this.length; i++) {
+        this[i] = parseFloat(this[i]).toFixed(value);
+    }
+};

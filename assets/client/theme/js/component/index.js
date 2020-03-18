@@ -351,27 +351,31 @@ function indexComponent (){
                     <table v-if="data.task.length > 0" class="table text-right" style="direction: rtl">
                         <thead>
                             <tr class="btn-dark">
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Done</th>
-                                <th scope="col">Tools</th>
+                                <th style="width: 144px;" scope="col" @click="sortInTaskTable($event,{type:'string'})" data-sort-table>Title</th>
+                                <th style="width: 505.6px;" scope="col">Description</th>
+                                <th style="width: 98.4px;" scope="col" @click="sortInTaskTable($event,{fixer:{count:3}})" data-sort-table>Time</th>
+                                <th style="width: 88px" @click="sortInTaskTable($event,{fixer:{after:'%'}})" data-sort-table>progress</th>
+                                <th style="width: 97.6px;" scope="col" @click="sortInTaskTable($event,{fixer:{count:3}})" data-sort-table>Done</th>
+                                <th style="width: 134.4px;" scope="col">Tools</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="sumValues(data.task,'NeedToStudy','number') > 0" class="btn-light" :data-related-task="index">
-                                <th width="150">Sum</th>
-                                <th><p>Sum Values</p></th>
-                                <th width="100" :title="hourMinute(sumValues(data.task,'NeedToStudy','number'))">{{sumValues(data.task,'NeedToStudy','number')}}</th>
-                                <th width="100" :title="hourMinute(sumValues(data.task,'studied','array'))">{{sumValues(data.task,'studied','array')}}</th>
-                                <th width="140"></th>
+<!--                            <tr v-if="sumValues(data.task,'NeedToStudy','number') > 0" class="btn-light" :data-related-task="index">-->
+                            <tr class="btn-light" :data-related-task="index">
+                                <th style="width: 144px;" width="150">Sum</th>
+                                <th style="width: 505.6px;"><p>Sum Values</p></th>
+                                <th style="width: 98.4px;" width="100" :title="hourMinute(sumValues(data.task,'NeedToStudy','number'))">{{sumValues(data.task,'NeedToStudy','number')}}</th>
+                                <th style="width: 88px">{{percentValues(sumValues(data.task,'NeedToStudy','number'),sumValues(data.task,'studied','array'))}}%</th>
+                                <th style="width: 97.6px;" width="100" :title="hourMinute(sumValues(data.task,'studied','array'))">{{sumValues(data.task,'studied','array')}}</th>
+                                <th style="width: 140px;" width="140"></th>
                             </tr>
                             <tr v-for="(data2,index2) in data.task" v-if="data2.active" :class="'btn-' + data2.color" :data-related-task="index + '-' + index2">
-                                <td width="150">{{data2.topicName}}</td>
-                                <td><p>{{data2.description}}</p></td>
-                                <td width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy.toFixed(3)}}</td>
-                                <td width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0).toFixed(3)}}</td>
-                                <td width="140">                           
+                                <td style="width: 144px;" width="150">{{data2.topicName}}</td>
+                                <td style="width: 505.6px;"><p>{{data2.description}}</p></td>
+                                <td style="width: 98.4px;" width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy.toFixed(3)}}</td>
+                                <td style="width: 88px">{{percentValues(data2.NeedToStudy,data2.studied.reduce((a, b) => a + b, 0))}}%</td>
+                                <td style="width: 97.6px;" width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0).toFixed(3)}}</td>
+                                <td style="width: 140px;" width="140">                           
                                     <a class="icons" :data-color="data2.color" @click="addAction($event,'task')" title="Add Time"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/schedule.png" alt="Add Done Time"></a>
                                     <a class="icons" :data-color="data2.color" @click="editAction($event,'task')" title="Edit Description"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/eraser.png" alt="Edit Description"></a>
                                     <a class="icons" :data-color="data2.color" @click="removeAction($event,'task')" title="Remove"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
@@ -879,6 +883,144 @@ function indexComponent (){
                 }
 
                 return hour + ":" + min.toFixed(0);
+            },
+            percentValues: function (target,value) {
+                target = parseFloat(target);
+                target === 0 ? target = 1 : "";
+                value = parseFloat(value);
+                return (( value * 100 ) / target).toFixed(0);
+            },
+            sortInTaskTable: function (event,config = {}) {
+                const defaultConfig = {
+                    type: "number",
+                    fixer : {
+                        after: null,
+                        before: null,
+                        count: null,
+                    }
+                };
+                config = Object.assign(defaultConfig, config);
+                const elm = event.target;
+                let elmText;
+                const parent = event.target.parentElement;
+                const table = elm.parentElement.parentElement.parentElement;
+                const childrenHeading = event.target.parentElement.querySelectorAll("th");
+                const tbody = table.querySelector("tbody");
+                const tbodyRow = table.querySelectorAll("tbody > tr");
+                const dataSortElements = document.querySelectorAll("[data-sort-table]");
+                let data = {
+                    theIndex : null,
+                    theTdInner : [],
+                    sortDirection : "up"
+                };
+
+                if (elm.hasAttribute("data-sort-table")){
+
+                    let span = elm.querySelector("span");
+                    let dataSort = elm.getAttribute("data-sort-table");
+
+                    data.sortDirection = dataSort;
+
+                    if(dataSort === "up"){
+
+                        span.innerHTML = "&#8595;";
+                        elm.setAttribute("data-sort-table","down");
+                        data.sortDirection = "down";
+
+                    }else if(dataSort === "down"){
+
+                        span.innerHTML = "&#8593;";
+                        elm.setAttribute("data-sort-table","up");
+                        data.sortDirection = "up";
+
+                    }else {
+
+                        elm.innerHTML += `<span>&#8593;</span>` ;
+                        elm.setAttribute("data-sort-table","up");
+                        data.sortDirection = "up";
+
+                    }
+                }
+
+                elmText = elm.innerText;
+
+                for (let i = 0 ; i < childrenHeading.length ; i++){
+                    childrenHeading[i].innerText === elmText ? data.theIndex = i : "";
+                }
+
+                for (let i = 0 ; i < tbodyRow.length ; i++){
+
+                    if (tbodyRow[i].innerHTML.includes("<td") && tbodyRow[i].innerHTML.includes("</td>")){
+                        if (config.type === "number"){
+                            data.theTdInner.push(parseFloat(tbodyRow[i].querySelectorAll("td")[data.theIndex].innerText));
+                        }else if (config.type === "string"){
+                            data.theTdInner.push(tbodyRow[i].querySelectorAll("td")[data.theIndex].innerText);
+                        }
+
+                    }
+
+                }
+
+                if (config.type === "number"){
+                    if (data.sortDirection === "down"){
+                        data.theTdInner.sort((a, b) => a - b);
+                    }else if (data.sortDirection === "up"){
+                        data.theTdInner.sort((a, b) => b - a);
+                    }
+                }else if (config.type === "string"){
+                    if (data.sortDirection === "down"){
+                        data.theTdInner.sort();
+                    }else if (data.sortDirection === "up"){
+                        data.theTdInner.sort().reverse();
+                    }
+                }
+
+
+                if (config.fixer.after != null){
+                    data.theTdInner.addAfter(config.fixer.after)
+                }
+                if (config.fixer.before != null){
+                    data.theTdInner.addBefore(config.fixer.after)
+                }
+                if (config.fixer.count != null){
+                    data.theTdInner.toFixed(config.fixer.count)
+                }
+
+
+                for (let i = 0 ; i < tbodyRow.length ; i++){
+
+                    if (tbodyRow[i].innerHTML.includes("<td") && tbodyRow[i].innerHTML.includes("</td>")){
+                        data.theTdInner.push();
+                    }
+
+                    for (let j = 0 ; j < data.theTdInner.length ; j++){
+                        if (tbodyRow[i].innerHTML.includes("<td") && tbodyRow[i].innerHTML.includes("</td>")){
+                            if (tbodyRow[i].querySelectorAll("td")[data.theIndex].innerText === data.theTdInner[j]){
+                                tbodyRow[i].querySelectorAll("td")[data.theIndex].parentElement.style.order = j.toString();
+                            }
+                        }
+                    }
+
+                }
+
+                if (!elm.classList.contains("active")){
+                    dani.removeClass([{"selector": "[data-sort-table]", "class": "active"}]);
+                    for(let i = 0 ; i < dataSortElements.length ; i++){
+                        if (dataSortElements[i] !== elm){
+                            if (dataSortElements[i].querySelector("span")){
+                                dataSortElements[i].querySelector("span").innerText = "";
+                            }
+                        }
+                    }
+                    elm.classList.add("active");
+                }
+
+                table.style.display = "flex";
+                table.style.flexDirection = "column";
+
+                tbody.style.display = "flex";
+                tbody.style.flexDirection = "column";
+
             }
         },
         computed : {

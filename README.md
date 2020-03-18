@@ -25,6 +25,7 @@ Now you can make task and set time you need to done this, add time you spend on 
     * set time need to done this in **hour** unit
     * add multi time when done part of the task in **hour** unit
     * show sum done time and time need to done
+    * Title, Time, Progress, Done columns  is sortable, just click on them
 
 ### Easy To Use
 
