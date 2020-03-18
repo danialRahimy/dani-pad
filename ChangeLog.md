@@ -1,6 +1,6 @@
 # Change Log
 
-#### 2.2.0
+## [2.2.0](https://github.com/free-byte/dani-pad/tree/V2.2.0)
 
 ##### Added
 ###### Feature:
