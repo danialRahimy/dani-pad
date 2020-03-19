@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.3.0](https://github.com/free-byte/dani-pad/tree/V2.3.0)
+
+##### Added
+###### Feature:
+* By Hover The Progress Field In Task Table, Remind Time In hh:mm format show
+
 ## [2.2.0](https://github.com/free-byte/dani-pad/tree/V2.2.0)
 
 ##### Added

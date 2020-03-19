@@ -365,7 +365,7 @@ function indexComponent (){
                                 <th style="width: 144px;" width="150">Sum</th>
                                 <th style="width: 505.6px;"><p>Sum Values</p></th>
                                 <th style="width: 98.4px;" width="100" :title="hourMinute(sumValues(data.task,'NeedToStudy','number'))">{{sumValues(data.task,'NeedToStudy','number')}}</th>
-                                <th style="width: 88px">{{percentValues(sumValues(data.task,'NeedToStudy','number'),sumValues(data.task,'studied','array'))}}%</th>
+                                <th style="width: 88px" :title="hourMinute((sumValues(data.task,'NeedToStudy','number')) - sumValues(data.task,'studied','array'))">{{percentValues(sumValues(data.task,'NeedToStudy','number'),sumValues(data.task,'studied','array'))}}%</th>
                                 <th style="width: 97.6px;" width="100" :title="hourMinute(sumValues(data.task,'studied','array'))">{{sumValues(data.task,'studied','array')}}</th>
                                 <th style="width: 140px;" width="140"></th>
                             </tr>
@@ -373,7 +373,7 @@ function indexComponent (){
                                 <td style="width: 144px;" width="150">{{data2.topicName}}</td>
                                 <td style="width: 505.6px;"><p>{{data2.description}}</p></td>
                                 <td style="width: 98.4px;" width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy.toFixed(3)}}</td>
-                                <td style="width: 88px">{{percentValues(data2.NeedToStudy,data2.studied.reduce((a, b) => a + b, 0))}}%</td>
+                                <td style="width: 88px" :title="hourMinute((data2.NeedToStudy - data2.studied.reduce((a, b) => a + b, 0)))">{{percentValues(data2.NeedToStudy,data2.studied.reduce((a, b) => a + b, 0))}}%</td>
                                 <td style="width: 97.6px;" width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0).toFixed(3)}}</td>
                                 <td style="width: 140px;" width="140">                           
                                     <a class="icons" :data-color="data2.color" @click="addAction($event,'task')" title="Add Time"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/schedule.png" alt="Add Done Time"></a>
