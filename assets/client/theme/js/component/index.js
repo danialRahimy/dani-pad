@@ -349,6 +349,7 @@ function indexComponent (){
                             <p>{{data2.value}}</p>
                             <a class="icons" :data-color="data2.color" @click="editAction($event,'note')" title="Edit"><img src="/assets/client/theme/img/icon/eraser.png" alt="Edit"></a>
                             <a class="icons" :data-color="data2.color" @click="removeAction($event,'note')" title="Remove"><img src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
+                            <a class="icons" :data-color="data2.color" @click="copyNote($event,'note')" title="copy"><img src="/assets/client/theme/img/icon/copy.png" alt="copy"></a>
                         </div>
                     </div>
                     <div>
@@ -367,20 +368,21 @@ function indexComponent (){
 <!--                            <tr v-if="sumValues(data.task,'NeedToStudy','number') > 0" class="btn-light" :data-related-task="index">-->
                             <tr class="btn-light" :data-related-task="index">
                                 <th style="width: 144px;" width="150">Sum</th>
-                                <th style="width: 505.6px;"><p>Sum Values</p></th>
+                                <th style="width: 445.6px;"><p>Sum Values</p></th>
                                 <th style="width: 98.4px;" width="100" :title="hourMinute(sumValues(data.task,'NeedToStudy','number'))">{{sumValues(data.task,'NeedToStudy','number')}}</th>
                                 <th style="width: 88px" :title="hourMinute((sumValues(data.task,'NeedToStudy','number')) - sumValues(data.task,'studied','array'))">{{percentValues(sumValues(data.task,'NeedToStudy','number'),sumValues(data.task,'studied','array'))}}%</th>
                                 <th style="width: 97.6px;" width="100" :title="hourMinute(sumValues(data.task,'studied','array'))">{{sumValues(data.task,'studied','array')}}</th>
-                                <th style="width: 140px;" width="140"></th>
+                                <th style="width: 200px;" width="140"></th>
                             </tr>
                             <tr v-for="(data2,index2) in data.task" v-if="data2.active" :class="'btn-' + data2.color" :data-related-task="index + '-' + index2">
                                 <td style="width: 144px;" width="150">{{data2.topicName}}</td>
-                                <td style="width: 505.6px;"><p>{{data2.description}}</p></td>
+                                <td style="width: 445.6px;"><p>{{data2.description}}</p></td>
                                 <td style="width: 98.4px;" width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy.toFixed(3)}}</td>
                                 <td style="width: 88px" :title="hourMinute((data2.NeedToStudy - data2.studied.reduce((a, b) => a + b, 0)))">{{percentValues(data2.NeedToStudy,data2.studied.reduce((a, b) => a + b, 0))}}%</td>
                                 <td style="width: 97.6px;" width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0).toFixed(3)}}</td>
-                                <td style="width: 140px;" width="140">                           
+                                <td style="width: 200px;" width="140">                           
                                     <a class="icons" :data-color="data2.color" @click="addAction($event,'task')" title="Add Time"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/schedule.png" alt="Add Done Time"></a>
+                                    <a class="icons" :data-color="data2.color" @click="copyTask($event,'task')" title="copy"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/copy.png" alt="copy"></a>
                                     <a class="icons" :data-color="data2.color" @click="editAction($event,'task')" title="Edit Description"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/eraser.png" alt="Edit Description"></a>
                                     <a class="icons" :data-color="data2.color" @click="removeAction($event,'task')" title="Remove"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
                                 </td>
@@ -841,6 +843,107 @@ function indexComponent (){
                                 msg = JSON.parse(msg);
                                 if (msg.status === "success"){
                                     dataFromCache.mainCat[idArray.split("-")[0]][value].splice(data.subId, 1);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: msg.message,
+                                    })
+                                }else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: "Oops...",
+                                    })
+                                }
+                            });
+                    }
+                });
+            },
+            copyNote : function (event) {
+                let thisV = this;
+                let idArray = event.target.parentNode.parentNode.getAttribute("data-related-note").split("-");
+                let data = {
+                    "id": this.dataFromCache.mainCat[idArray[0]].id,
+                    "subId": idArray[1]
+                };
+                let note = JSON.parse(JSON.stringify(dataFromCache.mainCat[idArray[0]]["note"][data.subId]));
+                Swal.fire({
+                    title: 'Are You Sure?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            method: "POST",
+                            url: thisV.config.addresses.api,
+                            data: {
+                                type: "mainCategory",
+                                subType: "copy",
+                                which: "note",
+                                data: {
+                                    id: data.id,
+                                    subId: data.subId,
+                                }
+                            }
+                        })
+                            .done(function( msg ) {
+                                msg = JSON.parse(msg);
+                                if (msg.status === "success"){
+                                    dataFromCache.mainCat[idArray[0]]["note"].push(note);
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: msg.message,
+                                    })
+                                }else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: "Oops...",
+                                    })
+                                }
+                            });
+                    }
+                });
+            },
+            copyTask : function (event) {
+                let thisV = this;
+                let idArray = event.target.getAttribute("data-related-task").split("-");
+                let data = {
+                    "id": this.dataFromCache.mainCat[idArray[0]].id,
+                    "subId": idArray[1]
+                };
+                let note = JSON.parse(JSON.stringify(dataFromCache.mainCat[idArray[0]]["task"][data.subId]));
+                Swal.fire({
+                    title: 'Are You Sure?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.value) {
+
+                        $.ajax({
+                            method: "POST",
+                            url: thisV.config.addresses.api,
+                            data: {
+                                type: "mainCategory",
+                                subType: "copy",
+                                which: "task",
+                                data: {
+                                    id: data.id,
+                                    subId: data.subId,
+                                }
+                            }
+                        })
+                            .done(function( msg ) {
+                                msg = JSON.parse(msg);
+                                if (msg.status === "success"){
+                                    dataFromCache.mainCat[idArray[0]]["task"].push(note);
                                     Swal.fire({
                                         icon: 'success',
                                         text: msg.message,

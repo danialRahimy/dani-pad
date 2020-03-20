@@ -14,14 +14,17 @@ Now you can make task and set time you need to done this, add time you spend on 
     * every category has been contain note and task
     * removable
     * editable the title
+    * copiable
     * move with drag and drop and save the position automatic
 * notes
     * multi background color
     * removable and editable
+    * copiable
 * tasks
     * multi background color
     * removable
     * editable the description
+    * copiable
     * set time need to done this in **hour** unit
     * add multi time when done part of the task in **hour** unit
     * show sum done time and time need to done
@@ -52,15 +55,16 @@ Now you can make task and set time you need to done this, add time you spend on 
 ###### Icon Learning
 icon  | description | where
 ----- | ----------- | -----
-![](assets/client/theme/img/icon/readme/pencil.png) | add new note | category
-![](assets/client/theme/img/icon/readme/clock.png) | add new task | category
-![](assets/client/theme/img/icon/readme/plus.png) | add new topic | add new task
-![](assets/client/theme/img/icon/readme/quit.png) | remove topic | add new task
-![](assets/client/theme/img/icon/readme/schedule.png) | add new time | task
-![](assets/client/theme/img/icon/readme/eraser.png) | edit | every where
-![](assets/client/theme/img/icon/readme/scissors.png) | remove | every where
-![](assets/client/theme/img/icon/readme/goal.png) | done status | category ( now not programmed )
-![](assets/client/theme/img/icon/readme/promotion.png) | in progress status | category ( now not programmed )
+![pencil](assets/client/theme/img/icon/readme/pencil.png) | add new note | category
+![clock](assets/client/theme/img/icon/readme/clock.png) | add new task | category
+![plus](assets/client/theme/img/icon/readme/plus.png) | add new topic | add new task
+![quit](assets/client/theme/img/icon/readme/quit.png) | remove topic | add new task
+![schedule](assets/client/theme/img/icon/readme/schedule.png) | add new time | task
+![eraser](assets/client/theme/img/icon/readme/eraser.png) | edit | every where
+![scissors](assets/client/theme/img/icon/readme/scissors.png) | remove | every where
+![copy](assets/client/theme/img/icon/readme/copy.png) | copy | every where
+![goal](assets/client/theme/img/icon/readme/goal.png) | done status | category ( now not programmed )
+![promotion](assets/client/theme/img/icon/readme/promotion.png) | in progress status | category ( now not programmed )
 
 in totally eraser icon for edit something and scissors icon for remove something
 

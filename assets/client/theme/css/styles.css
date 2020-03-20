@@ -70,12 +70,27 @@ body{
     color: #fff;
 }
 
+.parent-row a:nth-child(3){
+    float: left;
+    position: absolute;
+    left: 0;
+    top: 6px;
+    color: #fff;
+}
+.parent-row a:nth-child(4){
+    float: left;
+    position: absolute;
+    left: 80px;
+    top: 6px;
+    color: #fff;
+}
+
 .remove-row{
     position: absolute;
     top: 0;
     left: 4px;
     height: 38px;
-    width: 90px !important;
+    width: 200px !important;
     text-align: center;
     padding-top: 3px;
     cursor: pointer;
@@ -90,6 +105,7 @@ body{
     float: left;
     height: 33px;
     width: 33px;
+    margin: 0 2px;
 }
 
 /* START */ /* CATEGORIES */

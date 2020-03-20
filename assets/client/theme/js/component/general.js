@@ -79,6 +79,7 @@ function run(){
     <div v-if="mainCatId >= 0" class="remove-row icons">
         <a  @click="removeCollapseElm($event)" title="Remove"><img src="/assets/client/theme/img/icon/scissors.png" alt="Remove"></a>
         <a  @click="editCollapseElm($event)" title="Edit"><img src="/assets/client/theme/img/icon/eraser.png" alt="Edit"></a>
+        <a  @click="copyCollapseElm($event)" title="copy"><img src="/assets/client/theme/img/icon/copy.png" alt="copy"></a>
     </div>
 </section>
 
@@ -190,6 +191,70 @@ function run(){
                                 msg = JSON.parse(msg);
                                 if (msg.status === "success"){
                                     dataFromCache.mainCat[id].title = result.value;
+                                    Swal.fire({
+                                        icon: 'success',
+                                        text: msg.message,
+                                    })
+                                }else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: "Oops...",
+                                    })
+                                }
+                            });
+                    }
+                });
+            },
+            copyCollapseElm : function (event) {
+                let thisV = this;
+                let parentElm = event.target.parentNode.parentNode.parentNode;
+                let id = parentElm.getAttribute("data-main-cat-id");
+                let message = parentElm.querySelector("div[data-toggle]").innerText;
+                const categoryLengthArray = dataFromCache.mainCat.length;
+                let category = JSON.parse(JSON.stringify(dataFromCache.mainCat[id]));
+
+                Swal.fire({
+                    title: 'Are You Sure?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Submit',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.value) {
+
+                        let mainCatLength =  categoryLengthArray;
+                        mainCatLength += 1;
+
+                        let targetIndex = categoryLengthArray;
+                        targetIndex -= 1;
+
+                        category.id = dataFromCache.mainCat[targetIndex].id;
+                        category.id += 1;
+                        category.title = message + " - COPY";
+                        category.order = mainCatLength;
+
+                        $.ajax({
+                            method: "POST",
+                            url: thisV.config.addresses.api,
+                            data: {
+                                type: "mainCategory",
+                                subType: "copy",
+                                which: "mainCat",
+                                data: {
+                                    targetId: id,
+                                    newId: category.id,
+                                    newOrder: category.order,
+                                    title: message + " - COPY"
+                                }
+                            }
+                        })
+                            .done(function( msg ) {
+                                msg = JSON.parse(msg);
+                                if (msg.status === "success"){
+                                    dataFromCache.mainCat.push(category);
                                     Swal.fire({
                                         icon: 'success',
                                         text: msg.message,

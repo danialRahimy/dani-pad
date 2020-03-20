@@ -35,6 +35,10 @@ if ($_POST["type"] === "mainCategory"){
             $mainCatClass->updateOrder($_POST["data"]);
         }
 
+        if ($_POST["subType"] === "copy"){
+            $mainCatClass->copy($_POST["data"]);
+        }
+
     }
 
     if ($_POST["which"] === "note"){
@@ -49,6 +53,10 @@ if ($_POST["type"] === "mainCategory"){
 
         if ($_POST["subType"] === "edit"){
             $notesClass->edit($_POST["data"]);
+        }
+
+        if ($_POST["subType"] === "copy"){
+            $notesClass->copy($_POST["data"]);
         }
 
     }
@@ -69,6 +77,10 @@ if ($_POST["type"] === "mainCategory"){
 
         if ($_POST["subType"] === "addTime"){
             $tasksClass->addTime($_POST["data"]);
+        }
+
+        if ($_POST["subType"] === "copy"){
+            $tasksClass->copy($_POST["data"]);
         }
 
     }

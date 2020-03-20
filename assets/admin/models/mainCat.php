@@ -99,4 +99,33 @@ class mainCat{
             return false;
 
     }
+
+    /**
+     * @param $data
+     */
+    public function copy ($data){
+
+        $oldContent = $this->getData();
+
+        $index = count($oldContent);
+        $oldContent[] = $oldContent[intval($data["targetId"])];
+        $theCat = $oldContent[$index];
+        $theId = $theCat["id"];
+
+        $notes = $this->noteClass->getData();
+        $notes[$data["newId"]] = $notes[$theId];
+        $this->noteClass->putData($notes);
+
+        $tasks = $this->tasksClass->getData();
+        $tasks[$data["newId"]] = $tasks[$theId];
+        $this->tasksClass->putData($tasks);
+
+        $oldContent[$index]["id"] = intval($data["newId"]);
+        $oldContent[$index]["order"] = intval($data["newOrder"]);
+        $oldContent[$index]["title"] = $data["title"];
+
+        echo $this->putData($oldContent);
+
+    }
+
 }

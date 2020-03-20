@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.4.1](https://github.com/free-byte/dani-pad/tree/V2.4.1) 2020/03/21
+
+##### Added
+###### Feature:
+* With Copy Icon On Category, Note, Task, You Can Copy Them
+
 ## [2.3.1](https://github.com/free-byte/dani-pad/tree/V2.3.1) 2020/03/20
 
 ##### Fixed

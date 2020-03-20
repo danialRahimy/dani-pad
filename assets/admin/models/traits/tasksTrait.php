@@ -94,4 +94,17 @@ trait tasksTrait
 
     }
 
+    /**
+     * @param $data
+     */
+    public function copy ($data){
+
+        $oldContent = $this->getData();
+
+        $oldContent[$data["id"]][] = $oldContent[$data["id"]][intval($data["subId"])];
+
+        echo $this->putData($oldContent);
+
+    }
+
 }
