@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.3.1](https://github.com/free-byte/dani-pad/tree/V2.3.1) 2020/03/20
+
+##### Fixed
+###### Bug:
+* Set Correct Order When Add New Category
+
 ## [2.3.0](https://github.com/free-byte/dani-pad/tree/V2.3.0)
 
 ##### Added

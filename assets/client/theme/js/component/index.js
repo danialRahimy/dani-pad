@@ -29,8 +29,9 @@ function indexComponent (){
             addNewMainCategory: function (event) {
                 let inputValue = document.querySelector("#add-main-category-parent input").value;
                 let textareaValue = document.querySelector("#add-main-category-parent textarea").value;
+                const length = dataFromCache.mainCat.length;
+
                 function getID (){
-                    let length = dataFromCache.mainCat.length;
                     let length2 = length;
                     length2 -= 1;
                     if (length > 0){
@@ -41,6 +42,9 @@ function indexComponent (){
                         return 1;
                     }
                 }
+
+                let theLength = length;
+                theLength += 1;
                 let data = {
                     "id":  getID (),
                     "title": inputValue,
@@ -49,7 +53,7 @@ function indexComponent (){
                     "description": textareaValue,
                     "note": [],
                     "task":[],
-                    "order": dataFromCache.mainCat.length,
+                    "order": theLength,
                 };
 
                 $.ajax({
