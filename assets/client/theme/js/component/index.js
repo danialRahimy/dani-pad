@@ -356,31 +356,31 @@ function indexComponent (){
                     <table v-if="data.task.length > 0" class="table text-right" style="direction: rtl">
                         <thead>
                             <tr class="btn-dark">
-                                <th style="width: 144px;" scope="col" @click="sortInTaskTable($event,{type:'string'})" data-sort-table>Title</th>
+                                <th style="width: 144.2px;" width="144.2" scope="col" @click="sortInTaskTable($event,{type:'string'})" data-sort-table>Title</th>
                                 <th style="width: 505.6px;" scope="col">Description</th>
-                                <th style="width: 98.4px;" scope="col" @click="sortInTaskTable($event,{fixer:{count:3}})" data-sort-table>Time</th>
+                                <th style="width: 98.4px;" width="98.4" scope="col" @click="sortInTaskTable($event,{fixer:{count:3}})" data-sort-table>Time</th>
                                 <th style="width: 88px" @click="sortInTaskTable($event,{fixer:{after:'%'}})" data-sort-table>progress</th>
-                                <th style="width: 97.6px;" scope="col" @click="sortInTaskTable($event,{fixer:{count:3}})" data-sort-table>Done</th>
-                                <th style="width: 134.4px;" scope="col">Tools</th>
+                                <th style="width: 97.6px;" width="97.6" scope="col" @click="sortInTaskTable($event,{fixer:{count:3}})" data-sort-table>Done</th>
+                                <th style="width: 201.4px;" width="201.4" scope="col">Tools</th>
                             </tr>
                         </thead>
                         <tbody>
 <!--                            <tr v-if="sumValues(data.task,'NeedToStudy','number') > 0" class="btn-light" :data-related-task="index">-->
                             <tr class="btn-light" :data-related-task="index">
-                                <th style="width: 144px;" width="150">Sum</th>
-                                <th style="width: 445.6px;"><p>Sum Values</p></th>
-                                <th style="width: 98.4px;" width="100" :title="hourMinute(sumValues(data.task,'NeedToStudy','number'))">{{sumValues(data.task,'NeedToStudy','number')}}</th>
+                                <th style="width: 144.2px;" width="144.2">Sum</th>
+                                <th style="width: 505.6px;"><p>Sum Values</p></th>
+                                <th style="width: 98.4px;" width="98.4" :title="hourMinute(sumValues(data.task,'NeedToStudy','number'))">{{sumValues(data.task,'NeedToStudy','number')}}</th>
                                 <th style="width: 88px" :title="hourMinute((sumValues(data.task,'NeedToStudy','number')) - sumValues(data.task,'studied','array'))">{{percentValues(sumValues(data.task,'NeedToStudy','number'),sumValues(data.task,'studied','array'))}}%</th>
-                                <th style="width: 97.6px;" width="100" :title="hourMinute(sumValues(data.task,'studied','array'))">{{sumValues(data.task,'studied','array')}}</th>
-                                <th style="width: 200px;" width="140"></th>
+                                <th style="width: 97.6px;" width="97.6" :title="hourMinute(sumValues(data.task,'studied','array'))">{{sumValues(data.task,'studied','array')}}</th>
+                                <th style="width: 201.4px;" width="201.4"></th>
                             </tr>
                             <tr v-for="(data2,index2) in data.task" v-if="data2.active" :class="'btn-' + data2.color" :data-related-task="index + '-' + index2">
-                                <td style="width: 144px;" width="150">{{data2.topicName}}</td>
-                                <td style="width: 445.6px;"><p>{{data2.description}}</p></td>
-                                <td style="width: 98.4px;" width="100" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy.toFixed(3)}}</td>
+                                <td style="width: 144.2px;" width="144.2">{{data2.topicName}}</td>
+                                <td style="width: 505.6px;"><p>{{data2.description}}</p></td>
+                                <td style="width: 98.4px;" width="98.4" :title="hourMinute(data2.NeedToStudy)">{{data2.NeedToStudy.toFixed(3)}}</td>
                                 <td style="width: 88px" :title="hourMinute((data2.NeedToStudy - data2.studied.reduce((a, b) => a + b, 0)))">{{percentValues(data2.NeedToStudy,data2.studied.reduce((a, b) => a + b, 0))}}%</td>
-                                <td style="width: 97.6px;" width="100" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0).toFixed(3)}}</td>
-                                <td style="width: 200px;" width="140">                           
+                                <td style="width: 97.6px;" width="97.6" :title="hourMinute(data2.studied.reduce((a, b) => a + b, 0))">{{data2.studied.reduce((a, b) => a + b, 0).toFixed(3)}}</td>
+                                <td style="width: 201.4px;" width="201.4">                           
                                     <a class="icons" :data-color="data2.color" @click="addAction($event,'task')" title="Add Time"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/schedule.png" alt="Add Done Time"></a>
                                     <a class="icons" :data-color="data2.color" @click="copyTask($event,'task')" title="copy"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/copy.png" alt="copy"></a>
                                     <a class="icons" :data-color="data2.color" @click="editAction($event,'task')" title="Edit Description"><img :data-related-task="index + '-' + index2" src="/assets/client/theme/img/icon/eraser.png" alt="Edit Description"></a>

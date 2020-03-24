@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.4.2](https://github.com/free-byte/dani-pad/tree/V2.4.2) 2020/03/25
+
+##### Fixed
+###### Bug:
+* Fixed Columns Size When Sort In Task Tables
+
 ## [2.4.1](https://github.com/free-byte/dani-pad/tree/V2.4.1) 2020/03/21
 
 ##### Added
